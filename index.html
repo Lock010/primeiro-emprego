@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Avançado de Entrevista de Emprego</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-soft: #e2e8f0;
+            --panel: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --teal: #0f766e;
+            --shadow: rgba(15, 23, 42, 0.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0%, #0f172a 38%, #020817 100%);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 28px 30px;
+            border-radius: 20px;
+            box-shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        h1 {
+            color: var(--bg-dark);
+            text-align: center;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            margin: 0 0 20px;
+            letter-spacing: -0.03em;
+        }
+
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timer-box {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border: 2px solid #cbd5e1;
+            padding: 8px 14px;
+            border-radius: 999px;
+            color: var(--bg-dark);
+            font-size: 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .timer-warning {
+            border-color: #ef4444;
+            color: #b91c1c;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.55; }
+            100% { opacity: 1; }
+        }
+
+        .meter-container {
+            background: linear-gradient(180deg, #e2e8f0, #cbd5e1);
+            border-radius: 18px;
+            padding: 4px;
+            box-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.12);
+            margin-bottom: 20px;
+        }
+
+        .meter-bar {
+            height: 26px;
+            width: 50%;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            border-radius: 14px;
+            transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
+            text-align: right;
+            padding-right: 12px;
+            color: white;
+            font-size: 13px;
+            line-height: 26px;
+            font-weight: 800;
+            min-width: 60px;
+        }
+
+        .card {
+            background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+            border: 1px solid #e2e8f0;
+            border-left: 6px solid var(--blue);
+            padding: 20px 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.04);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #1e40af;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            line-height: 1.3;
+        }
+
+        .card p {
+            line-height: 1.7;
+            font-size: 15px;
+            margin: 0;
+            color: #334155;
+        }
+
+        .badge-peso {
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .peso-baixo { background-color: #e0f2fe; color: #0369a1; }
+        .peso-medio { background-color: #fef3c7; color: #b45309; }
+        .peso-alto { background-color: #ffedd5; color: #c2410c; }
+        .peso-critico { background-color: #fee2e2; color: #b91c1c; }
+
+        .feedback {
+            margin-bottom: 20px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            display: none;
+            font-weight: 600;
+        }
+
+        .feedback.show { display: block; }
+        .feedback-positivo {
+            background-color: #dcfce7;
+            color: #14532d;
+            border: 1px solid #bbf7d0;
+        }
+        .feedback-neutro {
+            background-color: #fef3c7;
+            color: #78350f;
+            border: 1px solid #fde68a;
+        }
+        .feedback-negativo {
+            background-color: #fee2e2;
+            color: #7f1d1d;
+            border: 1px solid #fecaca;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px 16px;
+            margin: 12px 0;
+            background: linear-gradient(180deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.04);
+        }
+
+        .btn:disabled {
+            background: linear-gradient(180deg, #94a3b8, #75849a);
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .start-panel {
+            display: grid;
+            gap: 22px;
+        }
+
+        .hero-card {
+            background: linear-gradient(135deg, #eff6ff, #f8fafc);
+            border-left-color: var(--purple);
+        }
+
+        .hero-card h3 {
+            color: var(--bg-dark);
+        }
+
+        .perfil-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+        }
+
+        .perfil-card {
+            border: 2px solid #dbeafe;
+            background: linear-gradient(180deg, #ffffff, #f8fafc);
+            border-radius: 14px;
+            padding: 16px 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .perfil-card:hover,
+        .perfil-card.selecionado {
+            border-color: var(--blue);
+            box-shadow: 0 12px 20px rgba(37, 99, 235, 0.14);
+            transform: translateY(-2px);
+        }
+
+        .perfil-card strong {
+            display: inline-block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: var(--bg-dark);
+        }
+
+        .perfil-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .cta-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(180deg, var(--green), #15803d);
+            color: white;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(22, 163, 74, 0.25);
+        }
+
+        .cta-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .resumo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .mini-card {
+            padding: 16px 14px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .mini-card span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .mini-card strong {
+            font-size: 1.1rem;
+            color: var(--bg-dark);
+        }
+
+        .resultado-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .status-aprovado {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-analise {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-reprovado {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 18px;
+            }
+
+            .info-header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .card-header {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulador Executivo de Entrevista</h1>
+
+    <div class="info-header">
+        <span id="etapa-texto">Etapa: 0 de 8</span>
+        <div id="timer-box" class="timer-box">
+            ⏱️ Tempo: <span id="tempo-restante">30</span>s
+        </div>
+        <span>Corte: 85%</span>
+    </div>
+
+    <div class="meter-container">
+        <div id="barra-admissao" class="meter-bar">50%</div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin-bottom: 20px;">
+
+    <div id="conteudo-jogo"></div>
+</div>
+
+<script>
+    const perfis = {
+        analista: {
+            label: 'Analista',
+            bonus: 0,
+            descricao: 'Foco em raciocínio, análise e clareza técnica.'
+        },
+        gestor: {
+            label: 'Gestor',
+            bonus: 5,
+            descricao: 'Avalia liderança, comunicação e visão estratégica.'
+        },
+        operacional: {
+            label: 'Operacional',
+            bonus: 3,
+            descricao: 'Teste de precisão, postura e relacionamento profissional.'
+        }
+    };
+
+    const TEMPO_POR_TIPO = {
+        objetiva: 20,
+        descritiva: 90
+    };
+
+    let taxaAdmissao = 50;
+    let cenaAtual = 0;
+    let tempoRestante = TEMPO_POR_TIPO.objetiva;
+    let timerInterval = null;
+    let perfilSelecionado = 'analista';
+    let historico = [];
+
+    const perguntasExtrasNervosismo = [
+        {
+            id: 'extra_1',
+            titulo: "Situação improvável: recuperação sob pressão",
+            peso: "Crítico",
+            classePeso: "peso-critico",
+            tipo: "objetiva",
+            texto: "Você teve uma pausa de hesitação durante a entrevista. O avaliador pergunta: 'Como você reage quando precisa decidir em segundos sem ter dados completos?'",
+            opcoes: [
+                { texto: "Estabeleço prioridades rapidamente, assumo uma decisão com base em evidências e reviso após a ação.", impacto: 12, tipo: "positivo", consequencia: "Você demonstrou coragem analítica e capacidade de agir sob pressão (+12%)." },
+                { texto: "Pede mais tempo e adia a decisão para evitar risco.", impacto: -10, tipo: "negativo", consequencia: "Atrasar a decisão pode sinalizar indecisão operacional (-10%)." },
+                { texto: "Passa a culpa pela situação para a equipe ou para o ambiente.", impacto: -18, tipo: "negativo", consequencia: "Falta de autocontrole e responsabilidade emocional (-18%)." }
+            ]
+        }
+    ];
+
+    const perguntas = [
+        {
+            id: 1,
+            tipo: 'objetiva',
+            titulo: 'Questão 1: posturas iniciais',
+            peso: 'Baixo',
+            classePeso: 'peso-baixo',
+            texto: 'Durante a recepção, a empresa está em pânico por uma falha de sistema. Como você reage?',
+            opcoes: [
+                { texto: 'Mantém postura profissional, aguarda a oportunidade e se apresenta com calma.', impacto: 8, tipo: 'positivo', consequencia: 'Você demonstrou compostura, profissionalismo e respeito ao ambiente (+8%).' },
+                { texto: 'Se apresenta rápido, mas usa o momento para criticar a falha e chamar atenção para si.', impacto: -10, tipo: 'negativo', consequencia: 'Você saiu do contexto e reduziu a credibilidade profissional (-10%).' },
+                { texto: 'Tenta auxiliar de forma útil, mas fala alto demais e interrompe a equipe durante a crise.', impacto: -18, tipo: 'negativo', consequencia: 'A intenção foi boa, mas a execução foi pouco estratégica e atrapalhou o ambiente (-18%).' }
+            ]
+        },
+        {
+            id: 2,
+            tipo: 'objetiva',
+            titulo: 'Questão 2: pitch inicial',
+            peso: 'Médio',
+            classePeso: 'peso-medio',
+            texto: 'O entrevistador pede sua apresentação em 60 segundos. Qual é a melhor abordagem?',
+            opcoes: [
+                { texto: 'Foca em trajetória, resultados e valor entregue à empresa.', impacto: 15, tipo: 'positivo', consequencia: 'Você apresentou uma narrativa estratégica e de impacto (+15%).' },
+                { texto: 'Fala da trajetória completa, incluindo detalhes de vida pessoal e experiências pouco relevantes para o cargo.', impacto: -7, tipo: 'neutro', consequencia: 'Você manteve a conversa longa, mas perdeu foco em valor para o papel (-7%).' },
+                { texto: 'Apresenta seus resultados, mas sem conectar a performance à necessidade da empresa.', impacto: -12, tipo: 'negativo', consequencia: 'A mensagem ficou genérica e pouco convincente para o time (-12%).' }
+            ]
+        },
+        {
+            id: 3,
+            tipo: 'objetiva',
+            titulo: 'Questão 3: gestão de erro',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'Seu time falhou em um processo crítico. Qual reação demonstra maturidade?',
+            opcoes: [
+                { texto: 'Explica o erro, reconhece sua participação e detalha medidas de correção.', impacto: 20, tipo: 'positivo', consequencia: 'Você mostrou responsabilidade, aprendizado e liderança (+20%).' },
+                { texto: 'Reconhece o erro, mas evita apontar o que poderia ter sido feito diferente no processo.', impacto: -8, tipo: 'neutro', consequencia: 'Você foi honesto, mas não mostrou visão de correção e aprendizado suficiente (-8%).' },
+                { texto: 'Desvia a culpa para o cliente ou para a área de suporte e pede para a conversa seguir.', impacto: -20, tipo: 'negativo', consequencia: 'Você não demonstrou liderança nem assumir responsabilidade (-20%).' }
+            ]
+        },
+        {
+            id: 4,
+            tipo: 'objetiva',
+            titulo: 'Questão 4: crise de cliente',
+            peso: 'Crítico',
+            classePeso: 'peso-critico',
+            texto: 'Um cliente ameaça cancelar por um erro do time. O que fazer primeiro?',
+            opcoes: [
+                { texto: 'Conduzir a conversa com o cliente, proteger a equipe e propor correção imediata.', impacto: 25, tipo: 'positivo', consequencia: 'Você agiu como líder regulando crise e preservando relacionamento (+25%).' },
+                { texto: 'Ceder ao cliente sem validar o contexto e sem discutir a causa raiz.', impacto: -15, tipo: 'negativo', consequencia: 'Você resolveu o sintoma, mas preservou pouco a credibilidade do processo (-15%).' },
+                { texto: 'Confrontar a equipe publicamente e depois tentar controlar a situação.', impacto: -18, tipo: 'negativo', consequencia: 'A resposta foi reativa, pouco estratégica e perigosa para o clima (-18%).' }
+            ]
+        },
+        {
+            id: 5,
+            tipo: 'objetiva',
+            titulo: 'Questão 5: produtividade',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'A equipe está atrasada e com orçamento reduzido. Qual seria sua ação inicial?',
+            opcoes: [
+                { texto: 'Mapear gargalos, remover redundâncias e priorizar entregas críticas.', impacto: 15, tipo: 'positivo', consequencia: 'Você mostrou visão operacional e foco em eficiência (+15%).' },
+                { texto: 'Aumentar carga de trabalho e exigir esforço extra sem revisar a causa do atraso.', impacto: -10, tipo: 'neutro', consequencia: 'Você priorizou pressão sobre diagnóstico, e isso costuma piorar o problema (-10%).' },
+                { texto: 'Contratar novos profissionais imediatamente, mesmo sem entender o gargalo principal.', impacto: -15, tipo: 'negativo', consequencia: 'A solução foi cara e pouco direcionada ao problema real (-15%).' }
+            ]
+        },
+        {
+            id: 6,
+            tipo: 'objetiva',
+            titulo: 'Questão 6: ética',
+            peso: 'Crítico',
+            classePeso: 'peso-critico',
+            texto: 'Um cliente pede que você ajuste dados para renovar um contrato. Qual sua decisão?',
+            opcoes: [
+                { texto: 'Recusa, propõe alternativas e comunica ao compliance.', impacto: 25, tipo: 'positivo', consequencia: 'Você demonstrou integridade e maturidade ética (+25%).' },
+                { texto: 'Ajusta os dados para manter o cliente satisfeito, acreditando que o risco é pequeno.', impacto: -30, tipo: 'negativo', consequencia: 'Você priorizou conveniência imediata em vez de integridade e compliance (-30%).' },
+                { texto: 'Envia o caso para outra área sem fornecer orientação clara nem confrontar o risco.', impacto: -12, tipo: 'neutro', consequencia: 'Você evitou a responsabilidade, mas não mostrou posicionamento profissional (-12%).' }
+            ]
+        },
+        {
+            id: 7,
+            tipo: 'objetiva',
+            titulo: 'Questão 7: negociação salarial',
+            peso: 'Médio',
+            classePeso: 'peso-medio',
+            texto: 'Quando questionado sobre salário, o que demonstra melhor posicionamento?',
+            opcoes: [
+                { texto: 'Apresenta faixa de mercado e deixa espaço para negociação realista.', impacto: 12, tipo: 'positivo', consequencia: 'Você demonstrou consciência de valor e equilíbrio comercial (+12%).' },
+                { texto: 'Aceita a primeira proposta sem discutir o mercado ou o impacto do cargo.', impacto: -10, tipo: 'negativo', consequencia: 'Você subvalorizou seu perfil e reduziu margem de negociação (-10%).' },
+                { texto: 'Pede um valor máximo, sem demonstrar como ele se relaciona com o papel e com o mercado.', impacto: -15, tipo: 'negativo', consequencia: 'A posição foi pouco estratégica e pouco embasada (-15%).' }
+            ]
+        },
+        {
+            id: 8,
+            tipo: 'objetiva',
+            titulo: 'Questão 8: curiosidade profissional',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'Ao final, qual pergunta mostra melhor interesse pela empresa?',
+            opcoes: [
+                { texto: 'Pergunta sobre KPIs, metas e indicadores dos primeiros 90 dias.', impacto: 20, tipo: 'positivo', consequencia: 'Você mostrou foco em desempenho e expectativa de resultados (+20%).' },
+                { texto: 'Pergunta somente sobre benefícios, folga e horários, sem demonstrar interesse em resultados.', impacto: -12, tipo: 'negativo', consequencia: 'Você falhou em mostrar preocupação com entregas e impacto (-12%).' },
+                { texto: 'Pergunta sobre cultura apenas no nível superficial e não se interessa por metas ou métricas.', impacto: -8, tipo: 'neutro', consequencia: 'A curiosidade foi insuficiente para demonstrar prioridade estratégica (-8%).' }
+            ]
+        },
+        {
+            id: 9,
+            tipo: 'objetiva',
+            titulo: 'Questão 9: liderança em reunião',
+            peso: 'Médio',
+            classePeso: 'peso-medio',
+            texto: 'Em uma reunião, um colaborador discorda publicamente da sua decisão. O que você faz?',
+            opcoes: [
+                { texto: 'Ouve, valida a preocupação e responde com argumentos objetivos, sem perder a direção.', impacto: 18, tipo: 'positivo', consequencia: 'Você mostrou equilíbrio entre abertura e liderança (+18%).' },
+                { texto: 'Recebe a crítica, mas responde sem nenhuma base objetiva e encerra a discussão de forma abrupta.', impacto: -11, tipo: 'negativo', consequencia: 'Você pareceu defensivo, e a conversa ficou menos produtiva (-11%).' },
+                { texto: 'Desvaloriza a opinião pública e ainda usa autoridade para encerrar qualquer discordância.', impacto: -20, tipo: 'negativo', consequencia: 'A postura foi autoritária e prejudicou a confiança do time (-20%).' }
+            ]
+        },
+        {
+            id: 10,
+            tipo: 'objetiva',
+            titulo: 'Questão 10: priorização',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'Você tem três tasks urgentes, duas com maior risco e uma com prazo de cliente. Como prioriza?',
+            opcoes: [
+                { texto: 'Analisa impacto em risco, prazo e dependências para priorizar pelo valor crítico.', impacto: 16, tipo: 'positivo', consequencia: 'Você atua com foco em risco e valor para o negócio (+16%).' },
+                { texto: 'Resolve as tarefas mais simples primeiro para manter a sensação de progresso.', impacto: -9, tipo: 'negativo', consequencia: 'Você priorizou produtividade aparente em vez de impacto real (-9%).' },
+                { texto: 'Aguarda orientação externa antes de decidir, mesmo com o risco crescente.', impacto: -12, tipo: 'negativo', consequencia: 'A indecisão aumentou o risco de atraso e piorou a situação (-12%).' }
+            ]
+        },
+        {
+            id: 11,
+            tipo: 'objetiva',
+            titulo: 'Questão 11: comunicação com stakeholders',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'Você precisa informar um atraso importante a um stakeholder. Qual abordagem é melhor?',
+            opcoes: [
+                { texto: 'Comunica com antecedência, explica a causa, o impacto e a ação de mitigação.', impacto: 18, tipo: 'positivo', consequencia: 'Você demonstrou transparência, coragem e controle de comunicação (+18%).' },
+                { texto: 'Comunica o atraso sem aprofundar a causa nem propor mitigação.', impacto: -10, tipo: 'negativo', consequencia: 'A mensagem foi incompleta e não reforçou confiança (-10%).' },
+                { texto: 'Esconde o problema até o último momento e depois justifica o atraso apenas com desculpas.', impacto: -18, tipo: 'negativo', consequencia: 'A falta de proatividade gerou perda de credibilidade (-18%).' }
+            ]
+        },
+        {
+            id: 12,
+            tipo: 'objetiva',
+            titulo: 'Questão 12: resilência',
+            peso: 'Crítico',
+            classePeso: 'peso-critico',
+            texto: 'Após uma crítica pública, qual resposta demonstra melhor maturidade profissional?',
+            opcoes: [
+                { texto: 'Agradece a observação, analisa a crítica e aplica ajustes práticos.', impacto: 22, tipo: 'positivo', consequencia: 'Você mostrou resiliência, humildade e capacidade de evolução (+22%).' },
+                { texto: 'Defende-se de forma defensiva, sem considerar a crítica como aprendizado.', impacto: -12, tipo: 'negativo', consequencia: 'Você reduziu a chance de evolução e aumentou a tensão (-12%).' },
+                { texto: 'Ignora a observação e espera que a situação se resolva sozinha.', impacto: -16, tipo: 'negativo', consequencia: 'A falta de receptividade reforçou a percepção de baixa maturidade (-16%).' }
+            ]
+        },
+        {
+            id: 13,
+            tipo: 'descritiva',
+            titulo: 'Questão 13: análise de processo',
+            peso: 'Crítico',
+            classePeso: 'peso-critico',
+            texto: 'Descreva, em 5 a 8 linhas, como você identificaria e corrigiria um processo de atendimento que está gerando atrasos constantes e reclamações de clientes.',
+            palavrasChave: ['cliente', 'dados', 'problema', 'processo', 'prioridade', 'métricas', 'ação', 'melhoria'],
+            minimoCaracteres: 120
+        },
+        {
+            id: 14,
+            tipo: 'descritiva',
+            titulo: 'Questão 14: conflito e liderança',
+            peso: 'Crítico',
+            classePeso: 'peso-critico',
+            texto: 'Explique em 5 a 8 linhas como você conduziria uma conversa difícil com um colaborador que cometeu um erro grave e ainda está defensivo.',
+            palavrasChave: ['erro', 'responsabilidade', 'diálogo', 'apoio', 'objetivo', 'correção', 'consequência', 'aprendizado'],
+            minimoCaracteres: 120
+        },
+        {
+            id: 15,
+            tipo: 'descritiva',
+            titulo: 'Questão 15: ética e tomada de decisão',
+            peso: 'Crítico',
+            classePeso: 'peso-critico',
+            texto: 'Em 5 a 8 linhas, descreva como você agiria se visse um colega pressionando um relatório para esconder um problema de qualidade ou de compliance.',
+            palavrasChave: ['ética', 'compliance', 'dados', 'relatório', 'responsabilidade', 'solução', 'transparência', 'código'],
+            minimoCaracteres: 120
+        }
+    ];
+
+    let cenas = [...perguntas];
+
+    function embaralharArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function embaralharTodasOpcoes() {
+        cenas.forEach(cena => {
+            if (cena.tipo === 'objetiva') {
+                embaralharArray(cena.opcoes);
+            }
+        });
+        perguntasExtrasNervosismo.forEach(cena => {
+            if (cena.tipo === 'objetiva') {
+                embaralharArray(cena.opcoes);
+            }
+        });
+    }
+
+    function limitarPontuacao(valor) {
+        return Math.min(100, Math.max(0, valor));
+    }
+
+    function atualizarBarra() {
+        const barra = document.getElementById('barra-admissao');
+        taxaAdmissao = limitarPontuacao(taxaAdmissao);
+        barra.style.width = `${taxaAdmissao}%`;
+        barra.innerText = `${taxaAdmissao}%`;
+
+        if (taxaAdmissao >= 85) {
+            barra.style.backgroundColor = '#16a34a';
+        } else if (taxaAdmissao >= 65) {
+            barra.style.backgroundColor = '#d97706';
+        } else {
+            barra.style.backgroundColor = '#dc2626';
+        }
+    }
+
+    function iniciarTemporizador() {
+        pararTemporizador();
+        const cenaAtualObj = cenas[cenaAtual];
+        tempoRestante = cenaAtualObj && cenaAtualObj.tipo === 'descritiva' ? TEMPO_POR_TIPO.descritiva : TEMPO_POR_TIPO.objetiva;
+        const timerElem = document.getElementById('tempo-restante');
+        const timerBox = document.getElementById('timer-box');
+
+        timerElem.innerText = tempoRestante;
+        timerBox.classList.remove('timer-warning');
+
+        timerInterval = setInterval(() => {
+            tempoRestante--;
+            timerElem.innerText = tempoRestante;
+
+            if (tempoRestante <= 10) {
+                timerBox.classList.add('timer-warning');
+            }
+
+            if (tempoRestante <= 0) {
+                pararTemporizador();
+                tratarTempoEsgotado();
+            }
+        }, 1000);
+    }
+
+    function pararTemporizador() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+    function renderInicio() {
+        const conteudo = document.getElementById('conteudo-jogo');
+        conteudo.innerHTML = `
+            <div class="start-panel">
+                <div class="card hero-card">
+                    <h3>Escolha o perfil da sua simulação</h3>
+                    <p>Este questionário tem 15 perguntas: 12 objetivas e 3 descritivas, com foco em raciocínio, comunicação, gestão e ética profissional.</p>
+                </div>
+
+                <div class="perfil-grid">
+                    ${Object.entries(perfis).map(([key, perfil]) => `
+                        <button class="perfil-card ${perfilSelecionado === key ? 'selecionado' : ''}" data-perfil="${key}">
+                            <strong>${perfil.label}</strong>
+                            <p>${perfil.descricao}</p>
+                        </button>
+                    `).join('')}
+                </div>
+
+                <button id="btn-iniciar" class="cta-btn">Iniciar questionário</button>
+            </div>
+        `;
+
+        document.querySelectorAll('.perfil-card').forEach(botao => {
+            botao.addEventListener('click', () => {
+                perfilSelecionado = botao.dataset.perfil;
+                renderInicio();
+            });
+        });
+
+        document.getElementById('btn-iniciar').addEventListener('click', () => {
+            taxaAdmissao = 50 + perfis[perfilSelecionado].bonus;
+            historico = [];
+            cenaAtual = 0;
+            atualizarBarra();
+            carregarCena();
+        });
+    }
+
+    function gerarFeedbackDescritivo(texto, pergunta) {
+        const normalizado = texto
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+        const palavrasChave = pergunta.palavrasChave.map(chave => chave.toLowerCase());
+        const keywordsEncontradas = palavrasChave.filter(chave => normalizado.includes(chave));
+
+        const termosProfissionais = [
+            'processo', 'cliente', 'equipe', 'metrica', 'metricas', 'risco', 'prioridade', 'diagnostico', 'solucao', 'acao',
+            'acompanhamento', 'documentacao', 'compliance', 'responsabilidade', 'impacto', 'resultado', 'correcao', 'mitigacao',
+            'ferramenta', 'indicador', 'entregavel', 'plano', 'estrategia', 'aprendizado', 'crise'
+        ];
+
+        const verbosAcao = [
+            'identifico', 'analis', 'map', 'prioriz', 'document', 'aplic', 'comunico', 'defino', 'corrig', 'mitig',
+            'acompanho', 'reviso', 'estabelec', 'registro', 'monit', 'conduz', 'avali', 'planej', 'alinh'
+        ];
+
+        const conectores = ['porque', 'pois', 'entao', 'logo', 'portanto', 'quando', 'enquanto', 'assim', 'como resultado', 'para'];
+        const termosProfissionaisEncontrados = termosProfissionais.filter(termo => normalizado.includes(termo)).length;
+        const verbosEncontrados = verbosAcao.filter(verbo => normalizado.includes(verbo)).length;
+        const conectoresEncontrados = conectores.filter(conector => normalizado.includes(conector)).length;
+        const temQuantidade = texto.trim().length >= pergunta.minimoCaracteres;
+        const respostaGenerica = /(lorem ipsum|qualquer coisa|teste|bla|asdf|texto|aleatorio|copiar|colar)/i.test(texto);
+        const repeticaoExcessiva = ((normalizado.match(/\b\w+\b/g) || []).filter(palavra => palavra.length > 3).length >= 200);
+
+        if (respostaGenerica || repeticaoExcessiva) {
+            return {
+                impacto: -20,
+                tipo: 'negativo',
+                mensagem: 'Resposta inadequada: o texto não apresentou raciocínio profissional suficiente, contexto real de negócio e ação estruturada (-20%).'
+            };
+        }
+
+        if (temQuantidade && keywordsEncontradas.length >= 4 && termosProfissionaisEncontrados >= 4 && verbosEncontrados >= 2 && conectoresEncontrados >= 1) {
+            return {
+                impacto: 18,
+                tipo: 'positivo',
+                mensagem: 'Resposta sólida: você mostrou análise profissional, ação concreta, senso de risco e solução prática (+18%).'
+            };
+        }
+
+        if (temQuantidade && keywordsEncontradas.length >= 2 && termosProfissionaisEncontrados >= 2 && verbosEncontrados >= 1) {
+            return {
+                impacto: 5,
+                tipo: 'neutro',
+                mensagem: 'Resposta aceitável, mas ainda falta aprofundamento em diagnóstico, prioridade e mecanismo de correção (+5%).'
+            };
+        }
+
+        return {
+            impacto: -12,
+            tipo: 'negativo',
+            mensagem: 'Sua resposta ficou superficial. O texto precisava mostrar contexto profissional, ação concreta e solução orientada a impacto (-12%).'
+        };
+    }
+
+    function carregarCena() {
+        const feedbackBox = document.getElementById('feedback-box');
+        if (feedbackBox) {
+            feedbackBox.className = 'feedback';
+        }
+
+        if (cenaAtual >= cenas.length) {
+            exibirResultadoFinal();
+            return;
+        }
+
+        const cena = cenas[cenaAtual];
+        const conteudo = document.getElementById('conteudo-jogo');
+
+        if (cena.tipo === 'objetiva') {
+            conteudo.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3>${cena.titulo}</h3>
+                        <span class="badge-peso ${cena.classePeso}">Peso: ${cena.peso}</span>
+                    </div>
+                    <p>${cena.texto}</p>
+                </div>
+
+                <div id="feedback-box" class="feedback"></div>
+                <div id="opcoes-box">
+                    ${cena.opcoes.map((opcao, index) => `
+                        <button class="btn" data-index="${index}">${opcao.texto}</button>
+                    `).join('')}
+                </div>
+            `;
+
+            document.querySelectorAll('.btn').forEach(botao => {
+                botao.addEventListener('click', () => {
+                    const opcao = cena.opcoes[Number(botao.dataset.index)];
+                    processarEscolha(opcao);
+                });
+            });
+        } else {
+            conteudo.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3>${cena.titulo}</h3>
+                        <span class="badge-peso ${cena.classePeso}">Peso: ${cena.peso}</span>
+                    </div>
+                    <p>${cena.texto}</p>
+                </div>
+
+                <div id="feedback-box" class="feedback"></div>
+
+                <textarea id="resposta-descritiva" rows="7" style="width:100%; border:1px solid #cbd5e1; border-radius:12px; padding:14px; font-size:14px; resize:vertical; margin-bottom:12px;" placeholder="Digite sua resposta detalhada aqui..."></textarea>
+                <button id="btn-responder" class="cta-btn">Enviar resposta</button>
+            `;
+
+            document.getElementById('btn-responder').addEventListener('click', () => {
+                const texto = document.getElementById('resposta-descritiva').value.trim();
+                if (!texto) {
+                    const feedbackBox = document.getElementById('feedback-box');
+                    feedbackBox.innerText = 'É necessário escrever uma resposta para continuar.';
+                    feedbackBox.className = 'feedback show feedback-neutro';
+                    return;
+                }
+
+                const avaliacao = gerarFeedbackDescritivo(texto, cena);
+                processarRespostaDescritiva(avaliacao, texto);
+            });
+        }
+
+        document.getElementById('etapa-texto').innerText = `Etapa: ${cenaAtual + 1} de ${cenas.length}`;
+        iniciarTemporizador();
+    }
+
+    function processarEscolha(opcao) {
+        pararTemporizador();
+        taxaAdmissao += opcao.impacto;
+        atualizarBarra();
+
+        historico.push({
+            titulo: cenas[cenaAtual].titulo,
+            impacto: opcao.impacto,
+            tipo: opcao.tipo,
+            texto: opcao.texto
+        });
+
+        const feedbackBox = document.getElementById('feedback-box');
+        feedbackBox.innerText = `[Impacto: ${opcao.impacto > 0 ? '+' + opcao.impacto : opcao.impacto}%] ${opcao.consequencia}`;
+        feedbackBox.className = `feedback show feedback-${opcao.tipo}`;
+
+        document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+
+        setTimeout(() => {
+            cenaAtual += 1;
+            carregarCena();
+        }, 2500);
+    }
+
+    function processarRespostaDescritiva(avaliacao, texto) {
+        pararTemporizador();
+        taxaAdmissao += avaliacao.impacto;
+        atualizarBarra();
+
+        historico.push({
+            titulo: cenas[cenaAtual].titulo,
+            impacto: avaliacao.impacto,
+            tipo: 'descritiva',
+            texto
+        });
+
+        const feedbackBox = document.getElementById('feedback-box');
+        feedbackBox.innerText = avaliacao.mensagem;
+        feedbackBox.className = `feedback show feedback-${avaliacao.tipo}`;
+
+        document.getElementById('btn-responder').disabled = true;
+        document.getElementById('resposta-descritiva').disabled = true;
+
+        setTimeout(() => {
+            cenaAtual += 1;
+            carregarCena();
+        }, 2500);
+    }
+
+    function tratarTempoEsgotado() {
+        const cenaAtualObj = cenas[cenaAtual];
+        if (cenaAtualObj.tipo === 'objetiva') {
+            document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+        } else {
+            const campo = document.getElementById('resposta-descritiva');
+            const botao = document.getElementById('btn-responder');
+            if (campo) campo.disabled = true;
+            if (botao) botao.disabled = true;
+        }
+
+        let punicao = -15;
+        let mensagem = '⏱️ Tempo esgotado! Sua resposta foi insuficiente e a avaliação penalizou sua pontuação.';
+
+        if (cenaAtualObj.classePeso === 'peso-critico') {
+            punicao = -30;
+            mensagem = '⏱️ Tempo esgotado! Em uma questão crítica, a hesitação foi interpretada como falta de firmeza (-30%).';
+        } else if (cenaAtualObj.tipo === 'descritiva') {
+            mensagem = '⏱️ Tempo esgotado! Sua resposta não foi concluída a tempo e a pontuação caiu por falta de profundidade (-15%).';
+        }
+
+        taxaAdmissao += punicao;
+        atualizarBarra();
+
+        const feedbackBox = document.getElementById('feedback-box');
+        feedbackBox.innerText = mensagem;
+        feedbackBox.className = 'feedback show feedback-negativo';
+
+        setTimeout(() => {
+            cenaAtual += 1;
+            carregarCena();
+        }, 2500);
+    }
+
+    function exibirResultadoFinal() {
+        pararTemporizador();
+        document.getElementById('timer-box').style.display = 'none';
+
+        const positivas = historico.filter(item => item.impacto > 0).length;
+        const negativas = historico.filter(item => item.impacto < 0).length;
+        const neutras = historico.filter(item => item.impacto === 0).length;
+        const melhor = [...historico].sort((a, b) => b.impacto - a.impacto)[0];
+        const pior = [...historico].sort((a, b) => a.impacto - b.impacto)[0];
+
+        let statusClass = 'status-reprovado';
+        let statusTexto = 'Não aprovado';
+        if (taxaAdmissao >= 85) {
+            statusClass = 'status-aprovado';
+            statusTexto = 'Aprovado';
+        } else if (taxaAdmissao >= 65) {
+            statusClass = 'status-analise';
+            statusTexto = 'Em análise';
+        }
+
+        const conteudo = document.getElementById('conteudo-jogo');
+        conteudo.innerHTML = `
+            <div class="card" style="border-left-color: ${taxaAdmissao >= 85 ? '#16a34a' : taxaAdmissao >= 65 ? '#d97706' : '#dc2626'}; background-color: ${taxaAdmissao >= 85 ? '#f0fdf4' : taxaAdmissao >= 65 ? '#fffbeb' : '#fef2f2'};">
+                <div class="resultado-badge ${statusClass}">${statusTexto}</div>
+                <h3>${taxaAdmissao >= 85 ? '🎉 Processo aprovado' : taxaAdmissao >= 65 ? '📌 Processo em análise' : '⚠️ Processo não concluído com aprovação'}</h3>
+                <p>Sua taxa final foi de <strong>${taxaAdmissao}%</strong>, com corte mínimo de 85%.</p>
+
+                <div class="resumo-grid">
+                    <div class="mini-card">
+                        <span>Objetivas</span>
+                        <strong>${historico.filter(item => item.tipo === 'objetiva').length}</strong>
+                    </div>
+                    <div class="mini-card">
+                        <span>Descritivas</span>
+                        <strong>${historico.filter(item => item.tipo === 'descritiva').length}</strong>
+                    </div>
+                    <div class="mini-card">
+                        <span>Acertos</span>
+                        <strong>${positivas}</strong>
+                    </div>
+                    <div class="mini-card">
+                        <span>Perfil</span>
+                        <strong>${perfis[perfilSelecionado].label}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Resumo final</h3>
+                <p><strong>Melhor resposta:</strong> ${melhor ? (melhor.texto.length > 120 ? melhor.texto.substring(0, 120) + '...' : melhor.texto) : 'Sem resposta relevante'}</p>
+                <p style="margin-top: 10px;"><strong>Ponto de atenção:</strong> ${pior ? (pior.texto.length > 120 ? pior.texto.substring(0, 120) + '...' : pior.texto) : 'Você manteve uma postura consistente.'}</p>
+            </div>
+
+            <button class="btn" style="text-align: center; background: linear-gradient(180deg, #16a34a, #15803d); font-weight: 800;" onclick="reiniciarJogo()">
+                🔄 Refazer questionário
+            </button>
+        `;
+    }
+
+    function reiniciarJogo() {
+        location.reload();
+    }
+
+    embaralharTodasOpcoes();
+    atualizarBarra();
+    renderInicio();
+</script>
+
+</body>
+</html>
