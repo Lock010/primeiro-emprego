@@ -818,11 +818,11 @@
     <h1>Simulador Executivo de Entrevista</h1>
 
     <div class="info-header">
-        <span id="etapa-texto">Etapa: 0 de 8</span>
+        <span id="etapa-texto">Etapa: 0 de 13</span>
         <div id="timer-box" class="timer-box">
-            ⏱️ Tempo: <span id="tempo-restante">30</span>s
+            ⏱️ Tempo: <span id="tempo-restante">60</span>s
         </div>
-        <span>Corte: 85%</span>
+        <span>Critério: 85%</span>
     </div>
 
     <div class="meter-container">
@@ -837,25 +837,64 @@
 <script>
     const perfis = {
         analista: {
-            label: 'Analista',
+            label: 'Analista de dados',
             bonus: 0,
-            descricao: 'Foco em raciocínio, análise e clareza técnica.'
+            descricao: 'Investiga métricas, qualidade de dados e decisões baseadas em evidências.',
+            pergunta: {
+                id: 'cargo_analista',
+                titulo: 'Caso da vaga: análise de dados',
+                peso: 'Crítico',
+                classePeso: 'peso-critico',
+                tipo: 'objetiva',
+                texto: 'A diretoria quer decidir hoje se interrompe uma campanha. O painel mostra queda de conversão, mas a instrumentação foi alterada ontem e o volume ainda é baixo. Qual é sua recomendação?',
+                opcoes: [
+                    { texto: 'Explicito a incerteza, valido eventos e segmentos afetados e proponho uma decisão provisória com critério e horário para reavaliar.', impacto: 18, tipo: 'positivo', consequencia: 'Você separou mudança de comportamento de possível falha de medição e deu à diretoria um critério de decisão sob incerteza (+18%).' },
+                    { texto: 'Comparo o resultado com campanhas anteriores e recomendo manter a campanha até atingir uma amostra maior.', impacto: 12, tipo: 'neutro', consequencia: 'A comparação histórica e a amostra maior ajudam, mas a mudança na instrumentação pode invalidar a comparação e o custo de esperar não foi avaliado (+12%).' },
+                    { texto: 'Recomendo pausar por algumas horas enquanto a equipe de dados confirma a instrumentação e retorno com uma leitura revisada.', impacto: 14, tipo: 'neutro', consequencia: 'A pausa limita exposição a um possível problema, mas sem dimensionar impacto e custo de interrupção pode ser uma reação desproporcional (+14%).' }
+                ]
+            }
         },
         gestor: {
-            label: 'Gestor',
-            bonus: 5,
-            descricao: 'Avalia liderança, comunicação e visão estratégica.'
+            label: 'Liderança de produto',
+            bonus: 0,
+            descricao: 'Equilibra necessidades de clientes, impacto de negócio e capacidade de execução.',
+            pergunta: {
+                id: 'cargo_gestao',
+                titulo: 'Caso da vaga: decisão de produto',
+                peso: 'Crítico',
+                classePeso: 'peso-critico',
+                tipo: 'objetiva',
+                texto: 'Duas áreas executivas exigem prioridade para iniciativas diferentes no próximo ciclo. Uma promete crescimento; a outra reduz um risco operacional recorrente. A equipe só consegue entregar uma. Como você conduz a decisão?',
+                opcoes: [
+                    { texto: 'Alinho o resultado esperado e o custo de adiar cada iniciativa, explicito premissas e proponho uma decisão reversível com indicador e data de revisão.', impacto: 18, tipo: 'positivo', consequencia: 'Você tornou comparáveis impactos e custos de oportunidade sem tratar estimativas como certezas, e definiu como revisar a decisão (+18%).' },
+                    { texto: 'Levo as duas opções aos executivos com estimativas e peço que o patrocinador de maior senioridade decida.', impacto: 12, tipo: 'neutro', consequencia: 'Escalar pode resolver um conflito de mandato, mas delegar a decisão sem estruturar critérios mantém a disputa e não protege a capacidade de execução (+12%).' },
+                    { texto: 'Divido o ciclo entre as duas iniciativas, com entregas menores, para preservar o relacionamento com ambas as áreas.', impacto: 10, tipo: 'neutro', consequencia: 'Fatiar pode reduzir o conflito, mas pode aumentar troca de contexto e deixar ambas sem impacto suficiente; é preciso validar dependências (+10%).' }
+                ]
+            }
         },
         operacional: {
-            label: 'Operacional',
-            bonus: 3,
-            descricao: 'Teste de precisão, postura e relacionamento profissional.'
+            label: 'Operações e atendimento',
+            bonus: 0,
+            descricao: 'Prioriza segurança, continuidade do serviço e resolução sustentável de problemas.',
+            pergunta: {
+                id: 'cargo_operacional',
+                titulo: 'Caso da vaga: operação crítica',
+                peso: 'Crítico',
+                classePeso: 'peso-critico',
+                tipo: 'objetiva',
+                texto: 'A fila de atendimento cresce e o SLA está perto de estourar. A equipe quer encerrar casos rapidamente usando uma resposta padrão, mas alguns clientes relatam um possível incidente de segurança. O que faz?',
+                opcoes: [
+                    { texto: 'Separo e escalo os relatos de segurança pelo fluxo de incidente, preservo evidências e ajusto a triagem da fila sem encerrar casos sem diagnóstico.', impacto: 18, tipo: 'positivo', consequencia: 'Você protegeu a resposta ao possível incidente e tratou o SLA sem ocultar sinais que exigem investigação (+18%).' },
+                    { texto: 'Mantenho o fluxo padrão para a fila e peço à equipe de segurança que investigue os relatos em paralelo.', impacto: 12, tipo: 'neutro', consequencia: 'A investigação paralela preserva o ritmo, mas não define quais casos devem ser retirados da resposta padrão nem como evitar respostas inadequadas (+12%).' },
+                    { texto: 'Suspendo o encerramento de todos os casos até a segurança confirmar se existe um incidente.', impacto: 14, tipo: 'neutro', consequencia: 'A cautela evita conclusões prematuras, mas interromper toda a fila pode agravar atrasos sem necessidade; o escopo do bloqueio deveria ser delimitado (+14%).' }
+                ]
+            }
         }
     };
 
     const TEMPO_POR_TIPO = {
-        objetiva: 20,
-        descritiva: 60
+        objetiva: 60,
+        descritiva: 120
     };
 
     let taxaAdmissao = 50;
@@ -864,6 +903,7 @@
     let timerInterval = null;
     let perfilSelecionado = 'analista';
     let modoSelecionado = 'completo';
+    let segundaChance = false;
     let historico = [];
     let faseJogo = 'inicio';
     let lobbyAnimation = null;
@@ -872,6 +912,7 @@
     let movimentoJogador = false;
     let animacaoCenario = null;
     let teclaMovimento = new Set();
+    let alvoInteracaoLobby = null;
     let dialogoLobby = 'Boa tarde! Você chegou para a entrevista. Pode explorar a recepção e conversar com a equipe.';
     let jogadorLobby = { x: 145, y: 365, destinoX: 145, destinoY: 365 };
     let personagensLobby = [
@@ -888,11 +929,11 @@
             peso: "Crítico",
             classePeso: "peso-critico",
             tipo: "objetiva",
-            texto: "Você teve uma pausa de hesitação durante a entrevista. O avaliador pergunta: 'Como você reage quando precisa decidir em segundos sem ter dados completos?'",
+            texto: "Uma falha interrompe parte do serviço e você precisa agir antes de ter o diagnóstico completo. O que orienta sua primeira decisão?",
             opcoes: [
-                { texto: "Estabeleço prioridades rapidamente, assumo uma decisão com base em evidências e reviso após a ação.", impacto: 12, tipo: "positivo", consequencia: "Você demonstrou coragem analítica e capacidade de agir sob pressão (+12%)." },
-                { texto: "Pede mais tempo e adia a decisão para evitar risco.", impacto: -10, tipo: "negativo", consequencia: "Atrasar a decisão pode sinalizar indecisão operacional (-10%)." },
-                { texto: "Passa a culpa pela situação para a equipe ou para o ambiente.", impacto: -18, tipo: "negativo", consequencia: "Falta de autocontrole e responsabilidade emocional (-18%)." }
+                { texto: "Interrompo a atividade de maior risco, explico a hipótese usada e defino quando reavaliar com novos dados.", impacto: 12, tipo: "positivo", consequencia: "Você protegeu o que podia ser afetado, tornou as premissas explícitas e criou um ponto de revisão (+12%)." },
+                { texto: "Peço alguns minutos para consultar quem conhece o sistema, enquanto acompanho se o impacto está aumentando.", impacto: 5, tipo: "neutro", consequencia: "Consultar alguém pode evitar um erro, mas faltou definir uma contenção imediata e um prazo para decidir (+5%)." },
+                { texto: "Retomo o serviço pela última configuração estável e investigo a causa depois, para reduzir o tempo de interrupção.", impacto: -5, tipo: "neutro", consequencia: "Restaurar uma versão estável pode ajudar, mas sem verificar efeitos colaterais ou comunicar a hipótese, a reversão também pode ampliar o impacto (-5%)." }
             ]
         }
     ];
@@ -901,14 +942,14 @@
         {
             id: 1,
             tipo: 'objetiva',
-            titulo: 'Questão 1: posturas iniciais',
-            peso: 'Baixo',
-            classePeso: 'peso-baixo',
-            texto: 'Durante a recepção, a empresa está em pânico por uma falha de sistema. Como você reage?',
+            titulo: 'Questão 1: decisão com evidências conflitantes',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'Uma mudança de preço precisa ser decidida em 48 horas. Vendas atribui a queda recente à sazonalidade; finanças vê risco de margem; a amostra disponível mistura segmentos diferentes. O que você recomenda antes da decisão?',
             opcoes: [
-                { texto: 'Mantém postura profissional, aguarda a oportunidade e se apresenta com calma.', impacto: 8, tipo: 'positivo', consequencia: 'Você demonstrou compostura, profissionalismo e respeito ao ambiente (+8%).' },
-                { texto: 'Se apresenta rápido, mas usa o momento para criticar a falha e chamar atenção para si.', impacto: -10, tipo: 'negativo', consequencia: 'Você saiu do contexto e reduziu a credibilidade profissional (-10%).' },
-                { texto: 'Tenta auxiliar de forma útil, mas fala alto demais e interrompe a equipe durante a crise.', impacto: -18, tipo: 'negativo', consequencia: 'A intenção foi boa, mas a execução foi pouco estratégica e atrapalhou o ambiente (-18%).' }
+                { texto: 'Defino qual decisão precisa ser tomada, separo dados comparáveis por segmento e proponho uma opção reversível com limite de perda e data para reavaliar.', impacto: 18, tipo: 'positivo', consequencia: 'Você alinhou a análise à decisão, evitou uma comparação enviesada e tornou explícito como limitar e reavaliar o risco (+18%).' },
+                { texto: 'Peço a vendas e finanças que quantifiquem seus cenários, comparo as premissas e levo as diferenças à pessoa responsável pela decisão.', impacto: 14, tipo: 'neutro', consequencia: 'Comparar premissas torna o conflito visível, mas ainda falta corrigir a mistura de segmentos e definir o que fazer se os dados não convergirem (+14%).' },
+                { texto: 'Recomendo manter o preço por mais um ciclo e coletar dados segmentados, evitando uma mudança difícil de reverter baseada em uma amostra fraca.', impacto: 12, tipo: 'neutro', consequencia: 'Adiar protege contra uma leitura frágil, mas o custo de esperar e a margem em risco precisam ser comparados antes de escolher essa opção (+12%).' }
             ]
         },
         {
@@ -917,50 +958,50 @@
             titulo: 'Questão 2: pitch inicial',
             peso: 'Médio',
             classePeso: 'peso-medio',
-            texto: 'O entrevistador pede sua apresentação em 60 segundos. Qual é a melhor abordagem?',
+            texto: 'A entrevista começa com: “Seu currículo mostra três mudanças de área em cinco anos. Como você explica sua trajetória e por que esta vaga faz sentido agora?” Você tem cerca de um minuto.',
             opcoes: [
-                { texto: 'Foca em trajetória, resultados e valor entregue à empresa.', impacto: 15, tipo: 'positivo', consequencia: 'Você apresentou uma narrativa estratégica e de impacto (+15%).' },
-                { texto: 'Fala da trajetória completa, incluindo detalhes de vida pessoal e experiências pouco relevantes para o cargo.', impacto: -7, tipo: 'neutro', consequencia: 'Você manteve a conversa longa, mas perdeu foco em valor para o papel (-7%).' },
-                { texto: 'Apresenta seus resultados, mas sem conectar a performance à necessidade da empresa.', impacto: -12, tipo: 'negativo', consequencia: 'A mensagem ficou genérica e pouco convincente para o time (-12%).' }
+                { texto: 'Explico a lógica das transições sem tratar cada uma como isolada, escolho um resultado que mostra competências transferíveis e conecto essa trajetória ao escopo desta vaga.', impacto: 15, tipo: 'positivo', consequencia: 'Você respondeu à dúvida implícita sobre consistência, demonstrou contribuição e explicou a motivação atual sem transformar a apresentação em defesa (+15%).' },
+                { texto: 'Resumo cada mudança com o motivo e o aprendizado principal, depois apresento o projeto recente mais próximo das responsabilidades descritas para a vaga.', impacto: 11, tipo: 'neutro', consequencia: 'Você contextualizou as transições e selecionou experiência relevante, mas faltou sintetizar o fio condutor e por que esta mudança faz sentido agora (+11%).' },
+                { texto: 'Começo pelo resultado mais forte da carreira, explico minha contribuição e só detalho as transições se a pessoa entrevistadora pedir esclarecimentos.', impacto: 8, tipo: 'neutro', consequencia: 'Um resultado forte cria interesse, mas deixar sem resposta a pergunta explícita sobre as mudanças pode parecer evasivo (+8%).' }
             ]
         },
         {
             id: 3,
             tipo: 'objetiva',
-            titulo: 'Questão 3: gestão de erro',
+            titulo: 'Questão 3: qualidade e correção de informação',
             peso: 'Alto',
             classePeso: 'peso-alto',
-            texto: 'Seu time falhou em um processo crítico. Qual reação demonstra maturidade?',
+            texto: 'Você encontra uma divergência material em um relatório executivo 30 minutos antes da reunião. A fonte correta ainda não foi confirmada, e uma decisão depende do número. Qual é sua primeira ação?',
             opcoes: [
-                { texto: 'Explica o erro, reconhece sua participação e detalha medidas de correção.', impacto: 20, tipo: 'positivo', consequencia: 'Você mostrou responsabilidade, aprendizado e liderança (+20%).' },
-                { texto: 'Reconhece o erro, mas evita apontar o que poderia ter sido feito diferente no processo.', impacto: -8, tipo: 'neutro', consequencia: 'Você foi honesto, mas não mostrou visão de correção e aprendizado suficiente (-8%).' },
-                { texto: 'Desvia a culpa para o cliente ou para a área de suporte e pede para a conversa seguir.', impacto: -20, tipo: 'negativo', consequencia: 'Você não demonstrou liderança nem assumir responsabilidade (-20%).' }
+                { texto: 'Aviso a pessoa que conduzirá a reunião, identifico o trecho afetado e proponho marcar o dado como não validado até conferir a fonte, sem atrasar a correção.', impacto: 20, tipo: 'positivo', consequencia: 'Você protegeu a decisão no prazo disponível sem substituir uma informação duvidosa por outra ainda não confirmada (+20%).' },
+                { texto: 'Confiro a origem com quem produziu o relatório e preparo uma versão corrigida; se não terminar antes da reunião, explico a divergência ao grupo.', impacto: 14, tipo: 'neutro', consequencia: 'A validação e a versão corrigida são necessárias, mas esperar para comunicar pode deixar a reunião começar com o dado contestado (+14%).' },
+                { texto: 'Peço para retirar o relatório da pauta e remarcar a decisão até que todas as fontes e cálculos sejam auditados.', impacto: 12, tipo: 'neutro', consequencia: 'Adiar evita uma decisão baseada em dúvida, mas uma auditoria completa pode não ser necessária para comunicar a incerteza e decidir com salvaguardas (+12%).' }
             ]
         },
         {
             id: 4,
             tipo: 'objetiva',
-            titulo: 'Questão 4: crise de cliente',
+            titulo: 'Questão 4: recuperação de confiança do cliente',
             peso: 'Crítico',
             classePeso: 'peso-critico',
-            texto: 'Um cliente ameaça cancelar por um erro do time. O que fazer primeiro?',
+            texto: 'Um cliente estratégico relata impacto intermitente e ameaça cancelar. A equipe técnica ainda não confirmou a causa; o contrato prevê créditos de serviço, mas a elegibilidade depende da duração. Como conduz o primeiro contato?',
             opcoes: [
-                { texto: 'Conduzir a conversa com o cliente, proteger a equipe e propor correção imediata.', impacto: 25, tipo: 'positivo', consequencia: 'Você agiu como líder regulando crise e preservando relacionamento (+25%).' },
-                { texto: 'Ceder ao cliente sem validar o contexto e sem discutir a causa raiz.', impacto: -15, tipo: 'negativo', consequencia: 'Você resolveu o sintoma, mas preservou pouco a credibilidade do processo (-15%).' },
-                { texto: 'Confrontar a equipe publicamente e depois tentar controlar a situação.', impacto: -18, tipo: 'negativo', consequencia: 'A resposta foi reativa, pouco estratégica e perigosa para o clima (-18%).' }
+                { texto: 'Reconheço o impacto, confirmo quais serviços e períodos foram afetados, aciono a resposta técnica e combino uma atualização em horário definido; trato créditos após validar o contrato.', impacto: 25, tipo: 'positivo', consequencia: 'Você combinou empatia, contenção e precisão comercial sem antecipar causa, prazo ou compensação (+25%).' },
+                { texto: 'Levo uma pessoa técnica à chamada para esclarecer o que já se sabe, registro o impacto relatado e retorno com a análise contratual assim que ela estiver concluída.', impacto: 16, tipo: 'neutro', consequencia: 'A presença técnica e a análise contratual ajudam a evitar promessas incorretas, mas faltou definir uma próxima atualização antes do fim da análise (+16%).' },
+                { texto: 'Apresento o compromisso de serviço previsto no contrato, inicio a apuração do crédito e confirmo em seguida se a falha se enquadra nos critérios.', impacto: 13, tipo: 'neutro', consequencia: 'Explicar o contrato e apurar o crédito é relevante, mas a resposta precisa primeiro esclarecer o impacto operacional e o plano de recuperação (+13%).' }
             ]
         },
         {
             id: 5,
             tipo: 'objetiva',
-            titulo: 'Questão 5: produtividade',
+            titulo: 'Questão 5: recuperação de entrega',
             peso: 'Alto',
             classePeso: 'peso-alto',
-            texto: 'A equipe está atrasada e com orçamento reduzido. Qual seria sua ação inicial?',
+            texto: 'Uma entrega está atrasada, o orçamento foi reduzido e a equipe aponta causas diferentes. Qual é a melhor primeira intervenção?',
             opcoes: [
-                { texto: 'Mapear gargalos, remover redundâncias e priorizar entregas críticas.', impacto: 15, tipo: 'positivo', consequencia: 'Você mostrou visão operacional e foco em eficiência (+15%).' },
-                { texto: 'Aumentar carga de trabalho e exigir esforço extra sem revisar a causa do atraso.', impacto: -10, tipo: 'neutro', consequencia: 'Você priorizou pressão sobre diagnóstico, e isso costuma piorar o problema (-10%).' },
-                { texto: 'Contratar novos profissionais imediatamente, mesmo sem entender o gargalo principal.', impacto: -15, tipo: 'negativo', consequencia: 'A solução foi cara e pouco direcionada ao problema real (-15%).' }
+                { texto: 'Mapeio o caminho crítico e a causa do atraso, valido quais compromissos são negociáveis e proponho um plano de recuperação com impacto explícito em prazo, escopo e qualidade.', impacto: 15, tipo: 'positivo', consequencia: 'Você avaliou a restrição e tornou explícito o custo das opções antes de comprometer prazo, escopo ou qualidade (+15%).' },
+                { texto: 'Renegocio primeiro as dependências externas e preservo o escopo, usando a capacidade disponível para paralelizar tarefas sem dependência.', impacto: 12, tipo: 'neutro', consequencia: 'A renegociação e o paralelismo podem recuperar prazo, mas preservar o escopo sem validar o caminho crítico pode ampliar retrabalho (+12%).' },
+                { texto: 'Apresento cenários de corte de escopo e prazo para a liderança escolher, com estimativa de esforço e impacto em cada entrega.', impacto: 13, tipo: 'neutro', consequencia: 'Oferecer cenários facilita uma decisão informada, mas faltou validar com a equipe qual restrição causa o atraso e se há uma mitigação operacional (+13%).' }
             ]
         },
         {
@@ -969,11 +1010,11 @@
             titulo: 'Questão 6: ética',
             peso: 'Crítico',
             classePeso: 'peso-critico',
-            texto: 'Um cliente pede que você ajuste dados para renovar um contrato. Qual sua decisão?',
+            texto: 'Na renovação de um contrato, o cliente questiona o indicador de desempenho. A definição atual consta no contrato; uma segmentação alternativa também é tecnicamente válida, mas muda a conclusão e a reunião executiva é em uma hora. O que você faz antes de apresentar os números?',
             opcoes: [
-                { texto: 'Recusa, propõe alternativas e comunica ao compliance.', impacto: 25, tipo: 'positivo', consequencia: 'Você demonstrou integridade e maturidade ética (+25%).' },
-                { texto: 'Ajusta os dados para manter o cliente satisfeito, acreditando que o risco é pequeno.', impacto: -30, tipo: 'negativo', consequencia: 'Você priorizou conveniência imediata em vez de integridade e compliance (-30%).' },
-                { texto: 'Envia o caso para outra área sem fornecer orientação clara nem confrontar o risco.', impacto: -12, tipo: 'neutro', consequencia: 'Você evitou a responsabilidade, mas não mostrou posicionamento profissional (-12%).' }
+                { texto: 'Confirmo a definição contratual, reconcilio as duas segmentações sobre a mesma população e período e apresento a diferença com premissas e ressalvas antes de recomendar qualquer leitura.', impacto: 25, tipo: 'positivo', consequencia: 'Você preservou o compromisso acordado e testou se a diferença vem da segmentação ou de uma comparação incompatível antes de usar o indicador (+25%).' },
+                { texto: 'Mantenho o indicador contratual para avaliar o serviço e incluo a segmentação alternativa como análise complementar, identificando claramente que ela responde a outra pergunta.', impacto: 17, tipo: 'neutro', consequencia: 'Separar desempenho contratual de análise diagnóstica é defensável, mas ainda é necessário reconciliar população e período para explicar por que as conclusões divergem (+17%).' },
+                { texto: 'Peço ao cliente que confirme por escrito a definição desejada, apresento o indicador contratual sem alterações e encaminho a divergência para revisão após a reunião.', impacto: 14, tipo: 'neutro', consequencia: 'Você preservou o dado contratual e registrou o pedido, mas a confirmação do cliente não substitui a validação independente da comparabilidade (+14%).' }
             ]
         },
         {
@@ -982,11 +1023,11 @@
             titulo: 'Questão 7: negociação salarial',
             peso: 'Médio',
             classePeso: 'peso-medio',
-            texto: 'Quando questionado sobre salário, o que demonstra melhor posicionamento?',
+            texto: 'A pessoa recrutadora pergunta sua expectativa antes de revelar a faixa. O escopo ainda pode variar entre dois níveis e você tem outra proposta válida por 48 horas. Como responde sem encerrar nenhuma negociação prematuramente?',
             opcoes: [
-                { texto: 'Apresenta faixa de mercado e deixa espaço para negociação realista.', impacto: 12, tipo: 'positivo', consequencia: 'Você demonstrou consciência de valor e equilíbrio comercial (+12%).' },
-                { texto: 'Aceita a primeira proposta sem discutir o mercado ou o impacto do cargo.', impacto: -10, tipo: 'negativo', consequencia: 'Você subvalorizou seu perfil e reduziu margem de negociação (-10%).' },
-                { texto: 'Pede um valor máximo, sem demonstrar como ele se relaciona com o papel e com o mercado.', impacto: -15, tipo: 'negativo', consequencia: 'A posição foi pouco estratégica e pouco embasada (-15%).' }
+                { texto: 'Pergunto a faixa e o nível em avaliação; compartilho uma faixa pesquisada compatível com cada escopo, menciono o prazo da outra proposta e confirmo interesse em comparar o pacote total.', impacto: 12, tipo: 'positivo', consequencia: 'Você forneceu contexto verificável, manteve transparência sobre o prazo e evitou ancorar a expectativa em um nível de escopo ainda indefinido (+12%).' },
+                { texto: 'Apresento uma faixa de mercado para o nível mais provável, esclareço que ela depende do escopo e dos benefícios e peço uma previsão de prazo para a decisão.', impacto: 9, tipo: 'neutro', consequencia: 'A referência e a flexibilidade são úteis, mas assumir um nível provável pode criar uma âncora inadequada antes de confirmar o escopo (+9%).' },
+                { texto: 'Explico que já tenho uma proposta com prazo curto, peço a faixa aprovada e proponho retomar a expectativa depois de conhecer o nível e o pacote completos.', impacto: 6, tipo: 'neutro', consequencia: 'Você informou o prazo e solicitou dados relevantes, mas adiou sua própria referência sem verificar se isso permite manter o processo dentro do prazo (+6%).' }
             ]
         },
         {
@@ -995,11 +1036,11 @@
             titulo: 'Questão 8: curiosidade profissional',
             peso: 'Alto',
             classePeso: 'peso-alto',
-            texto: 'Ao final, qual pergunta mostra melhor interesse pela empresa?',
+            texto: 'A liderança explicou que as prioridades mudam com frequência e que a vaga trabalha com três áreas executivas. Você só tem tempo para uma pergunta final. O que ajuda mais a entender como o trabalho será realmente conduzido?',
             opcoes: [
-                { texto: 'Pergunta sobre KPIs, metas e indicadores dos primeiros 90 dias.', impacto: 20, tipo: 'positivo', consequencia: 'Você mostrou foco em desempenho e expectativa de resultados (+20%).' },
-                { texto: 'Pergunta somente sobre benefícios, folga e horários, sem demonstrar interesse em resultados.', impacto: -12, tipo: 'negativo', consequencia: 'Você falhou em mostrar preocupação com entregas e impacto (-12%).' },
-                { texto: 'Pergunta sobre cultura apenas no nível superficial e não se interessa por metas ou métricas.', impacto: -8, tipo: 'neutro', consequencia: 'A curiosidade foi insuficiente para demonstrar prioridade estratégica (-8%).' }
+                { texto: '“Quando essas prioridades entram em conflito, quem decide o que será adiado, com base em quais evidências e como a pessoa nesta vaga participa?”', impacto: 20, tipo: 'positivo', consequencia: 'Você investigou o mecanismo de decisão, os critérios e a responsabilidade real do cargo diante da ambiguidade descrita (+20%).' },
+                { texto: '“Quais resultados definiriam um bom primeiro semestre, e como vocês ajustam essa avaliação quando as prioridades mudam?”', impacto: 16, tipo: 'neutro', consequencia: 'Você esclareceu expectativas e adaptação, mas ainda não descobriu como as três áreas resolvem prioridades incompatíveis (+16%).' },
+                { texto: '“O que motivou a abertura da vaga e qual das três áreas espera a contribuição mais urgente?”', impacto: 13, tipo: 'neutro', consequencia: 'Você identificou a demanda inicial, mas a resposta pode não explicar como o trabalho será priorizado quando as áreas discordarem (+13%).' }
             ]
         },
         {
@@ -1008,11 +1049,11 @@
             titulo: 'Questão 9: liderança em reunião',
             peso: 'Médio',
             classePeso: 'peso-medio',
-            texto: 'Em uma reunião, um colaborador discorda publicamente da sua decisão. O que você faz?',
+            texto: 'Faltam 15 minutos para recomendar a expansão de um programa. Um novo painel indica impacto menor que o relatório usado até agora, mas conta uma população diferente. A decisão pode ser revertida no ciclo seguinte. O que você faz?',
             opcoes: [
-                { texto: 'Ouve, valida a preocupação e responde com argumentos objetivos, sem perder a direção.', impacto: 18, tipo: 'positivo', consequencia: 'Você mostrou equilíbrio entre abertura e liderança (+18%).' },
-                { texto: 'Recebe a crítica, mas responde sem nenhuma base objetiva e encerra a discussão de forma abrupta.', impacto: -11, tipo: 'negativo', consequencia: 'Você pareceu defensivo, e a conversa ficou menos produtiva (-11%).' },
-                { texto: 'Desvaloriza a opinião pública e ainda usa autoridade para encerrar qualquer discordância.', impacto: -20, tipo: 'negativo', consequencia: 'A postura foi autoritária e prejudicou a confiança do time (-20%).' }
+                { texto: 'Reconcilio definição, população e período dos dois painéis, verifico se a diferença muda a decisão e proponho expansão limitada com critério de interrupção e revisão no próximo ciclo.', impacto: 18, tipo: 'positivo', consequencia: 'Você tratou a divergência metodológica, usou a reversibilidade como proteção e definiu que evidência interromperia a expansão (+18%).' },
+                { texto: 'Mantenho a recomendação original por ser a análise já revisada, registro a nova leitura como ressalva e peço uma comparação consistente antes do próximo ciclo.', impacto: 12, tipo: 'neutro', consequencia: 'Usar a análise revisada evita improvisação, mas a reversibilidade da decisão permite testar se a nova evidência muda o risco agora (+12%).' },
+                { texto: 'Adio a expansão até que as equipes alinhem as definições, informando o custo provável do atraso e levando uma recomendação atualizada no próximo ciclo.', impacto: 10, tipo: 'neutro', consequencia: 'Adiar protege contra uma comparação inválida, mas pode ser mais conservador que uma expansão limitada com critério de reversão (+10%).' }
             ]
         },
         {
@@ -1021,11 +1062,11 @@
             titulo: 'Questão 10: priorização',
             peso: 'Alto',
             classePeso: 'peso-alto',
-            texto: 'Você tem três tasks urgentes, duas com maior risco e uma com prazo de cliente. Como prioriza?',
+            texto: 'Hoje vencem três entregas e há uma única pessoa disponível: uma obrigação com cliente, uma correção para vulnerabilidade de severidade ainda não confirmada e uma dependência que bloqueia outra equipe. O que faz nos próximos 30 minutos?',
             opcoes: [
-                { texto: 'Analisa impacto em risco, prazo e dependências para priorizar pelo valor crítico.', impacto: 16, tipo: 'positivo', consequencia: 'Você atua com foco em risco e valor para o negócio (+16%).' },
-                { texto: 'Resolve as tarefas mais simples primeiro para manter a sensação de progresso.', impacto: -9, tipo: 'negativo', consequencia: 'Você priorizou produtividade aparente em vez de impacto real (-9%).' },
-                { texto: 'Aguarda orientação externa antes de decidir, mesmo com o risco crescente.', impacto: -12, tipo: 'negativo', consequencia: 'A indecisão aumentou o risco de atraso e piorou a situação (-12%).' }
+                { texto: 'Faço triagem inicial da vulnerabilidade e aciono o fluxo de segurança; confirmo o prazo real das outras entregas e negocio uma sequência com os responsáveis, explicitando qualquer risco residual.', impacto: 16, tipo: 'positivo', consequencia: 'Você verificou primeiro o dano potencial, acionou quem pode avaliar a vulnerabilidade e tornou visível o custo das prioridades adiadas (+16%).' },
+                { texto: 'Concluo a obrigação externa no prazo, mas aviso imediatamente segurança e a equipe bloqueada sobre o conflito e peço contenção temporária da vulnerabilidade.', impacto: 12, tipo: 'neutro', consequencia: 'Você protegeu o compromisso com o cliente e notificou os envolvidos, mas assumiu uma ordem sem conhecer a exposição nem confirmar se a contenção é suficiente (+12%).' },
+                { texto: 'Peço ao gestor que desempate as prioridades, enquanto reúno impacto, prazo e esforço de cada item para que a decisão seja tomada com contexto.', impacto: 10, tipo: 'neutro', consequencia: 'Escalar a disputa pode ser adequado, mas usar os próximos minutos apenas para preparar a decisão atrasa uma triagem inicial do risco (+10%).' }
             ]
         },
         {
@@ -1034,63 +1075,61 @@
             titulo: 'Questão 11: comunicação com stakeholders',
             peso: 'Alto',
             classePeso: 'peso-alto',
-            texto: 'Você precisa informar um atraso importante a um stakeholder. Qual abordagem é melhor?',
+            texto: 'Às 14h, uma dependência externa torna provável um atraso de até dois dias. A causa está sendo confirmada e o stakeholder precisa reportar o status às 17h. Ainda não há uma nova data confiável. O que você envia agora?',
             opcoes: [
-                { texto: 'Comunica com antecedência, explica a causa, o impacto e a ação de mitigação.', impacto: 18, tipo: 'positivo', consequencia: 'Você demonstrou transparência, coragem e controle de comunicação (+18%).' },
-                { texto: 'Comunica o atraso sem aprofundar a causa nem propor mitigação.', impacto: -10, tipo: 'negativo', consequencia: 'A mensagem foi incompleta e não reforçou confiança (-10%).' },
-                { texto: 'Esconde o problema até o último momento e depois justifica o atraso apenas com desculpas.', impacto: -18, tipo: 'negativo', consequencia: 'A falta de proatividade gerou perda de credibilidade (-18%).' }
+                { texto: 'Informo a faixa de atraso como estimativa, registro o que está confirmado, descrevo a mitigação e combino uma atualização antes das 17h mesmo que a data siga em validação.', impacto: 18, tipo: 'positivo', consequencia: 'Você deu ao stakeholder material para o reporte sem transformar uma estimativa em compromisso e definiu um próximo contato compatível com o prazo (+18%).' },
+                { texto: 'Envio um status dizendo que a data está em revisão, compartilho a causa provável com ressalva e prometo confirmar o prazo antes do reporte das 17h.', impacto: 12, tipo: 'neutro', consequencia: 'O status é útil, mas a causa ainda está sendo confirmada e a promessa de uma data pode criar uma certeza que não existe (+12%).' },
+                { texto: 'Escalo o risco internamente para validar a mitigação e envio ao stakeholder um informe preliminar assim que houver um responsável e um plano aprovados.', impacto: 9, tipo: 'neutro', consequencia: 'A validação interna melhora a consistência, mas esperar a aprovação do plano pode deixar pouco tempo para o stakeholder preparar o reporte (+9%).' }
             ]
         },
         {
             id: 12,
             tipo: 'objetiva',
-            titulo: 'Questão 12: resilência',
+            titulo: 'Questão 12: crítica sob prazo',
             peso: 'Crítico',
             classePeso: 'peso-critico',
-            texto: 'Após uma crítica pública, qual resposta demonstra melhor maturidade profissional?',
+            texto: 'Dez minutos antes de uma recomendação executiva, uma liderança diz que sua análise ignora um segmento importante, mas não aponta qual. A conclusão depende da diferença entre segmentos. Como responde?',
             opcoes: [
-                { texto: 'Agradece a observação, analisa a crítica e aplica ajustes práticos.', impacto: 22, tipo: 'positivo', consequencia: 'Você mostrou resiliência, humildade e capacidade de evolução (+22%).' },
-                { texto: 'Defende-se de forma defensiva, sem considerar a crítica como aprendizado.', impacto: -12, tipo: 'negativo', consequencia: 'Você reduziu a chance de evolução e aumentou a tensão (-12%).' },
-                { texto: 'Ignora a observação e espera que a situação se resolva sozinha.', impacto: -16, tipo: 'negativo', consequencia: 'A falta de receptividade reforçou a percepção de baixa maturidade (-16%).' }
+                { texto: 'Pergunto qual decisão pode mudar por causa do segmento, faço uma checagem de sensibilidade focada nesse ponto e apresento a recomendação com a limitação e a validação pendente.', impacto: 22, tipo: 'positivo', consequencia: 'Você converteu uma crítica vaga em uma hipótese verificável, focou no risco decisório e preservou transparência dentro do prazo (+22%).' },
+                { texto: 'Mostro as fontes e os cortes já analisados, peço que a liderança identifique o segmento que tem em mente e incorporo a resposta antes de fechar a recomendação.', impacto: 16, tipo: 'neutro', consequencia: 'Você solicitou precisão e apresentou a base, mas dependeu da liderança para formular o teste e não delimitou como decidir se o tempo acabar (+16%).' },
+                { texto: 'Retiro a conclusão executiva, apresento apenas os dados descritivos e proponho emitir uma recomendação depois de revisar todos os segmentos.', impacto: 13, tipo: 'neutro', consequencia: 'Evitar uma conclusão incompleta é prudente, mas retirar toda a recomendação pode desperdiçar o prazo sem testar o segmento que realmente mudaria a decisão (+13%).' }
             ]
         },
         {
             id: 13,
             tipo: 'descritiva',
-            titulo: 'Questão 13: melhorar um processo',
+            titulo: 'Questão 13: evidências de execução',
             peso: 'Crítico',
             classePeso: 'peso-critico',
-            texto: 'O atendimento está atrasando. Em até 3 linhas, diga como descobriria a causa e melhoraria o processo.',
-            palavrasChave: ['cliente', 'dados', 'processo', 'prioridade', 'ação', 'melhoria'],
-            minimoCaracteres: 60
+            texto: 'Conte sobre uma decisão importante em que os dados disponíveis eram incompletos ou contraditórios. Em até 3 linhas, explique o contexto, sua contribuição, o trade-off que considerou, o resultado observado e o que faria diferente hoje.',
+            minimoCaracteres: 90
         },
         {
             id: 14,
             tipo: 'descritiva',
-            titulo: 'Questão 14: conversa difícil',
+            titulo: 'Questão 14: influência sem autoridade',
             peso: 'Crítico',
             classePeso: 'peso-critico',
-            texto: 'Uma pessoa da equipe cometeu um erro e está na defensiva. Em até 3 linhas, como você conversaria com ela?',
-            palavrasChave: ['erro', 'responsabilidade', 'diálogo', 'apoio', 'correção', 'aprendizado'],
-            minimoCaracteres: 60
+            texto: 'Descreva uma situação real em que uma pessoa ou área importante discordou da sua recomendação. Em até 3 linhas, explique os interesses em conflito, como você influenciou a decisão, o resultado e o que aprendeu.',
+            minimoCaracteres: 90
         }
     ];
 
     const cenariosVisuais = [
-        { cenario: 'recepcao', local: 'Recepção em movimento', fala: 'A equipe está lidando com uma falha agora. Como você se comporta ao chegar?', legenda: 'A primeira impressão começa antes da conversa.', entrevistador: 'preocupado', candidato: 'pensativo' },
+        { cenario: 'recepcao', local: 'Estudo de caso', fala: 'Os dados e as áreas envolvidas apontam para decisões diferentes. Como você reduziria a incerteza?', legenda: 'A qualidade do raciocínio importa mais que uma resposta pronta.', entrevistador: 'preocupado', candidato: 'pensativo' },
         { cenario: 'apresentacao', local: 'Sala de entrevista', fala: 'Você tem 60 segundos. Conte sua trajetória e o valor que entrega.', legenda: 'Clareza e foco ajudam sua história a aparecer.', entrevistador: 'curioso', candidato: 'confiante' },
-        { cenario: 'equipe', local: 'Reunião de equipe', fala: 'O time cometeu um erro importante. Como você conduz a situação?', legenda: 'Responsabilidade também é mostrar o próximo passo.', entrevistador: 'pensativo', candidato: 'pensativo' },
-        { cenario: 'cliente', local: 'Chamada com cliente', fala: 'Um cliente está prestes a cancelar. O que você faz primeiro?', legenda: 'Escuta, ação e confiança precisam caminhar juntas.', entrevistador: 'preocupado', candidato: 'confiante' },
+        { cenario: 'equipe', local: 'Revisão executiva', fala: 'Uma divergência material apareceu antes de uma decisão. Como você limita o risco?', legenda: 'Comunique a incerteza antes de apresentar uma correção.', entrevistador: 'pensativo', candidato: 'pensativo' },
+        { cenario: 'cliente', local: 'Revisão de serviço', fala: 'O cliente relata impacto, mas causa e duração ainda estão sendo verificadas.', legenda: 'Recupere a confiança sem prometer o que ainda não sabe.', entrevistador: 'preocupado', candidato: 'confiante' },
         { cenario: 'planejamento', local: 'Quadro de planejamento', fala: 'O prazo apertou e o orçamento diminuiu. Por onde você começa?', legenda: 'Diagnosticar o gargalo evita aumentar o problema.', entrevistador: 'curioso', candidato: 'pensativo' },
         { cenario: 'etica', local: 'Revisão de contrato', fala: 'Pedem para alterar dados para renovar um contrato. Qual é sua decisão?', legenda: 'Integridade profissional não é negociável.', entrevistador: 'pensativo', candidato: 'confiante' },
         { cenario: 'negociacao', local: 'Conversa sobre proposta', fala: 'Como você apresenta sua expectativa salarial com segurança?', legenda: 'Valor e contexto tornam a negociação mais forte.', entrevistador: 'curioso', candidato: 'confiante' },
         { cenario: 'metas', local: 'Encerramento da entrevista', fala: 'Que pergunta mostraria sua curiosidade sobre o trabalho?', legenda: 'Interesse genuíno também olha para os resultados.', entrevistador: 'confiante', candidato: 'curioso' },
-        { cenario: 'reuniao', local: 'Reunião de decisão', fala: 'Uma pessoa discorda da sua decisão diante do grupo. Como responde?', legenda: 'Ouvir com abertura não significa perder a direção.', entrevistador: 'curioso', candidato: 'pensativo' },
+        { cenario: 'reuniao', local: 'Reunião de decisão', fala: 'Uma fonte nova contradiz sua recomendação. Como verifica a divergência no prazo disponível?', legenda: 'Teste a evidência sem transformar a discordância em disputa pessoal.', entrevistador: 'curioso', candidato: 'pensativo' },
         { cenario: 'prioridades', local: 'Painel de tarefas', fala: 'Há três urgências, riscos diferentes e um prazo de cliente. Como prioriza?', legenda: 'Impacto e dependências ajudam a ordenar o trabalho.', entrevistador: 'pensativo', candidato: 'confiante' },
         { cenario: 'stakeholders', local: 'Alinhamento de projeto', fala: 'Um prazo importante vai atrasar. Como você avisa a liderança?', legenda: 'Antecedência e plano de ação preservam confiança.', entrevistador: 'preocupado', candidato: 'confiante' },
-        { cenario: 'feedback', local: 'Conversa de feedback', fala: 'Você recebeu uma crítica pública. Como transforma isso em aprendizado?', legenda: 'Maturidade aparece na forma de seguir em frente.', entrevistador: 'pensativo', candidato: 'pensativo' },
-        { cenario: 'processo', local: 'Central de atendimento', fala: 'Atrasos e reclamações se repetem. Como investigaria e corrigiria o processo?', legenda: 'Use dados para encontrar a causa e medir a melhora.', entrevistador: 'curioso', candidato: 'pensativo' },
-        { cenario: 'conversa', local: 'Conversa individual', fala: 'Uma pessoa errou e está na defensiva. Como conduziria o diálogo?', legenda: 'Firmeza e apoio podem fazer parte da mesma conversa.', entrevistador: 'preocupado', candidato: 'confiante' },
+        { cenario: 'feedback', local: 'Revisão de análise', fala: 'Uma crítica pública diz que falta algo, mas não traz exemplos. Como esclarece o risco?', legenda: 'Investigue a crítica sem aceitá-la às cegas nem descartá-la.', entrevistador: 'pensativo', candidato: 'pensativo' },
+        { cenario: 'processo', local: 'Entrevista comportamental', fala: 'Fale de uma decisão com dados incompletos: qual era seu papel e o que aconteceu?', legenda: 'Resultados e aprendizados precisam ser concretos.', entrevistador: 'curioso', candidato: 'pensativo' },
+        { cenario: 'conversa', local: 'Entrevista comportamental', fala: 'Conte quando alguém discordou da sua recomendação e como você influenciou a decisão.', legenda: 'Demonstre influência com evidências, não apenas intenção.', entrevistador: 'preocupado', candidato: 'confiante' },
         { cenario: 'compliance', local: 'Revisão de qualidade', fala: 'Você percebe uma tentativa de esconder um problema no relatório. O que faria?', legenda: 'Transparência protege as pessoas e o negócio.', entrevistador: 'pensativo', candidato: 'confiante' }
     ];
 
@@ -1484,7 +1523,7 @@
         const hint = document.getElementById('lobby-hint');
         if (hint) {
             hint.innerText = faseJogo === 'lobby'
-                ? 'Aproxime-se de alguém para conversar. Use WASD ou as setas.'
+                ? 'Clique/toque para andar; aproxime-se e interaja. WASD/setas também funcionam.'
                 : faseJogo === 'aproximando'
                     ? 'Ana chamou você para a entrevista...'
                     : 'A entrevista está pronta para começar.';
@@ -1518,6 +1557,36 @@
         if (maisProximo && distanciaJogador(maisProximo) <= 125) conversarCom(maisProximo.id);
     }
 
+    function moverParaLobby(x, y, personagem = null) {
+        const destino = personagem
+            ? (() => {
+                const diferencaX = jogadorLobby.x - personagem.x;
+                const diferencaY = jogadorLobby.y - personagem.y;
+                const distancia = Math.hypot(diferencaX, diferencaY) || 1;
+                return {
+                    x: personagem.x + diferencaX / distancia * 88,
+                    y: personagem.y + diferencaY / distancia * 88
+                };
+            })()
+            : { x, y };
+
+        jogadorLobby.destinoX = Math.max(55, Math.min(905, destino.x));
+        jogadorLobby.destinoY = Math.max(287, Math.min(412, destino.y));
+        alvoInteracaoLobby = personagem ? personagem.id : null;
+    }
+
+    function clicarNaRecepcao(event) {
+        const canvas = event.currentTarget;
+        const limites = canvas.getBoundingClientRect();
+        const x = (event.clientX - limites.left) * canvas.width / limites.width;
+        const y = (event.clientY - limites.top) * canvas.height / limites.height;
+        const personagem = personagensLobby.find(item =>
+            item.ativo && Math.hypot(x - item.x, y - item.y) <= 65
+        );
+
+        moverParaLobby(x, y, personagem);
+    }
+
     function atualizarLobbyFrame(timestamp) {
         if (faseJogo !== 'lobby' && faseJogo !== 'aproximando' && faseJogo !== 'conversa') {
             lobbyAnimation = null;
@@ -1526,6 +1595,7 @@
 
         const delta = Math.min(timestamp - (lastLobbyFrame || timestamp), 32);
         lastLobbyFrame = timestamp;
+        tempoAnimacao = timestamp / 1000;
 
         if (faseJogo === 'lobby') {
             const horizontal = Number(teclaMovimento.has('d') || teclaMovimento.has('arrowright')) - Number(teclaMovimento.has('a') || teclaMovimento.has('arrowleft'));
@@ -1534,7 +1604,29 @@
             if (horizontal || vertical) {
                 jogadorLobby.x = Math.max(55, Math.min(905, jogadorLobby.x + horizontal / magnitude * delta * 0.24));
                 jogadorLobby.y = Math.max(287, Math.min(412, jogadorLobby.y + vertical / magnitude * delta * 0.18));
-                framePersonagem += 1;
+                jogadorLobby.destinoX = jogadorLobby.x;
+                jogadorLobby.destinoY = jogadorLobby.y;
+                alvoInteracaoLobby = null;
+                movimentoJogador = true;
+            } else {
+                const diferencaX = jogadorLobby.destinoX - jogadorLobby.x;
+                const diferencaY = jogadorLobby.destinoY - jogadorLobby.y;
+                const distancia = Math.hypot(diferencaX, diferencaY);
+                if (distancia > 2) {
+                    const passo = Math.min(distancia, delta * 0.22);
+                    jogadorLobby.x += diferencaX / distancia * passo;
+                    jogadorLobby.y += diferencaY / distancia * passo;
+                    movimentoJogador = true;
+                } else {
+                    jogadorLobby.destinoX = jogadorLobby.x;
+                    jogadorLobby.destinoY = jogadorLobby.y;
+                    movimentoJogador = false;
+                    if (alvoInteracaoLobby) {
+                        const id = alvoInteracaoLobby;
+                        alvoInteracaoLobby = null;
+                        conversarCom(id);
+                    }
+                }
             }
         } else if (faseJogo === 'aproximando') {
             jogadorLobby.x = Math.min(655, jogadorLobby.x + delta * 0.12);
@@ -1550,7 +1642,6 @@
                 if (dialogo) dialogo.innerText = dialogoLobby;
                 atualizarInteracoesLobby();
             }
-            framePersonagem += 1;
         }
 
         const canvas = document.getElementById('lobby-canvas');
@@ -1571,7 +1662,7 @@
                     <span id="lobby-hint">Aproxime-se de alguém para conversar. Use WASD ou as setas.</span>
                 </div>
                 <div class="lobby-canvas-wrap">
-                    <canvas id="lobby-canvas" width="960" height="540" aria-label="Recepção interativa em pixel art"></canvas>
+                    <canvas id="lobby-canvas" width="960" height="540" aria-label="Recepção interativa em pixel art. Clique ou toque para mover e selecione um personagem para conversar."></canvas>
                 </div>
                 <div id="lobby-dialog" class="lobby-dialog" aria-live="polite">${dialogoLobby}</div>
                 <div class="lobby-actions">
@@ -1581,7 +1672,7 @@
                     <button id="lobby-start" class="btn lobby-action primary" hidden>Começar entrevista</button>
                 </div>
                 <div class="lobby-controls">
-                    <span>W A S D / setas para andar • E para interagir com quem estiver perto</span>
+                    <span>Clique/toque para andar; clique em alguém para conversar • WASD/setas e E também funcionam</span>
                     <div class="move-pad" aria-label="Controles de movimento">
                         <button class="move-key" data-dir="up" aria-label="Mover para cima">↑</button>
                         <button class="move-key" data-dir="left" aria-label="Mover para esquerda">←</button>
@@ -1596,6 +1687,7 @@
             botao.addEventListener('click', () => conversarCom(botao.dataset.interagir));
         });
         document.getElementById('lobby-start').addEventListener('click', iniciarEntrevista);
+        document.getElementById('lobby-canvas').addEventListener('pointerdown', clicarNaRecepcao);
         document.querySelectorAll('.move-key').forEach(botao => {
             const direcoes = { up: 'w', left: 'a', down: 's', right: 'd' };
             const pressionar = event => {
@@ -1624,12 +1716,21 @@
     }
 
     function renderCenaVisual(indice = cenaAtual) {
-        const visual = cenariosVisuais[indice] || {
+        const pergunta = cenas[indice];
+        const visualDaVaga = pergunta && typeof pergunta.id === 'string' && pergunta.id.startsWith('cargo_');
+        const visual = visualDaVaga
+            ? {
+                cenario: 'planejamento',
+                local: `Estudo de caso • ${perfis[perfilSelecionado].label}`,
+                fala: 'O cenário tem incertezas e mais de um custo possível. Qual hipótese orienta sua decisão?',
+                legenda: 'Considere evidências, reversibilidade e impacto para o negócio.'
+            }
+            : cenariosVisuais[indice] || {
             ...cenariosVisuais[0],
             local: 'Simulação de entrevista',
             fala: 'Respire fundo. Vamos começar: mostre o melhor da sua experiência.',
             legenda: 'Uma pergunta de cada vez. Você está no controle.'
-        };
+            };
 
         return `
             <section class="scene-stage" data-cenario="${visual.cenario}" aria-label="${visual.local}">
@@ -1665,6 +1766,13 @@
 
     function limitarPontuacao(valor) {
         return Math.min(100, Math.max(0, valor));
+    }
+
+    function converterImpactoEmPontos(impacto, opcoes) {
+        const niveis = [...new Set(opcoes)].sort((a, b) => a - b);
+        if (niveis.length < 2) return 0;
+        const posicao = niveis.indexOf(impacto) / (niveis.length - 1);
+        return Math.round((posicao * 2 - 1) * 3);
     }
 
     function atualizarBarra() {
@@ -1714,13 +1822,54 @@
         }
     }
 
+    function iniciarNovaTentativa() {
+        pararTemporizador();
+        if (lobbyAnimation) cancelAnimationFrame(lobbyAnimation);
+        teclaMovimento.clear();
+        alvoInteracaoLobby = null;
+        jogadorLobby = { x: 145, y: 365, destinoX: 145, destinoY: 365 };
+        movimentoJogador = false;
+        personagensLobby = [
+            { id: 'marina', nome: 'Marina', cargo: 'Recepcionista', x: 360, y: 354, cor: '#73529a', ativo: true },
+            { id: 'rafael', nome: 'Rafael', cargo: 'Candidato', x: 480, y: 365, cor: '#547c70', ativo: true },
+            { id: 'ana', nome: 'Ana', cargo: 'Entrevistadora', x: 740, y: 316, cor: '#72528f', ativo: true }
+        ];
+        taxaAdmissao = 50 + perfis[perfilSelecionado].bonus;
+        historico = [];
+        cenaAtual = 0;
+        cenas = perguntas
+            .filter(pergunta => modoSelecionado === 'completo' || pergunta.tipo === 'objetiva')
+            .map(pergunta => ({
+                ...pergunta,
+                opcoes: pergunta.opcoes ? [...pergunta.opcoes] : undefined
+            }));
+        const perguntaDaVaga = {
+            ...perfis[perfilSelecionado].pergunta,
+            opcoes: [...perfis[perfilSelecionado].pergunta.opcoes]
+        };
+        const indicePrimeiraRespostaAberta = cenas.findIndex(pergunta => pergunta.tipo === 'descritiva');
+        cenas.splice(indicePrimeiraRespostaAberta < 0 ? cenas.length : indicePrimeiraRespostaAberta, 0, perguntaDaVaga);
+        embaralharTodasOpcoes();
+        atualizarBarra();
+        segundaChance = false;
+        faseJogo = 'lobby';
+        document.getElementById('etapa-texto').innerText = `Etapa: 0 de ${cenas.length}`;
+        renderLobby();
+    }
+
     function renderInicio() {
+        pararTemporizador();
+        document.getElementById('timer-box').style.display = 'flex';
+        taxaAdmissao = 50 + perfis[perfilSelecionado].bonus;
+        atualizarBarra();
         const conteudo = document.getElementById('conteudo-jogo');
+        document.getElementById('etapa-texto').innerText =
+            `Etapa: 0 de ${modoSelecionado === 'completo' ? 15 : 13}`;
         conteudo.innerHTML = `
             <div class="start-panel">
                 <div class="card hero-card">
-                    <h3>Escolha o perfil da sua simulação</h3>
-                    <p>Explore a recepção, converse com a equipe e escolha como quer fazer a entrevista.</p>
+                    <h3>${segundaChance ? 'Escolha outro cargo para sua segunda tentativa' : 'Escolha o cargo da entrevista'}</h3>
+                    <p>Casos situacionais com informação incompleta, pressão de prazo e custos de oportunidade. Justifique sua decisão nas respostas abertas.</p>
                 </div>
 
                 <div class="perfil-grid">
@@ -1735,15 +1884,15 @@
                 <div class="modo-grid" role="group" aria-label="Formato da entrevista">
                     <button class="modo-card ${modoSelecionado === 'completo' ? 'selecionado' : ''}" data-modo="completo" aria-pressed="${modoSelecionado === 'completo'}">
                         <strong>Simulado completo</strong>
-                        <span>12 perguntas rápidas + 2 respostas curtas</span>
+                        <span>13 casos situacionais + 2 respostas abertas</span>
                     </button>
                     <button class="modo-card ${modoSelecionado === 'rapidas' ? 'selecionado' : ''}" data-modo="rapidas" aria-pressed="${modoSelecionado === 'rapidas'}">
                         <strong>Só perguntas rápidas</strong>
-                        <span>12 perguntas objetivas, sem texto longo</span>
+                        <span>13 casos situacionais, sem texto longo</span>
                     </button>
                 </div>
 
-                <button id="btn-iniciar" class="cta-btn">Entrar na recepção</button>
+                <button id="btn-iniciar" class="cta-btn">${segundaChance ? 'Iniciar segunda tentativa' : 'Entrar na recepção'}</button>
             </div>
         `;
 
@@ -1762,14 +1911,7 @@
         });
 
         document.getElementById('btn-iniciar').addEventListener('click', () => {
-            taxaAdmissao = 50 + perfis[perfilSelecionado].bonus;
-            historico = [];
-            cenaAtual = 0;
-            cenas = perguntas.filter(pergunta => modoSelecionado === 'completo' || pergunta.tipo === 'objetiva');
-            embaralharTodasOpcoes();
-            atualizarBarra();
-            faseJogo = 'lobby';
-            renderLobby();
+            iniciarNovaTentativa();
         });
     }
 
@@ -1779,24 +1921,20 @@
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '');
 
-        const palavrasChave = pergunta.palavrasChave.map(chave => chave.toLowerCase());
-        const keywordsEncontradas = palavrasChave.filter(chave => normalizado.includes(chave));
-
-        const termosProfissionais = [
-            'processo', 'cliente', 'equipe', 'metrica', 'metricas', 'risco', 'prioridade', 'diagnostico', 'solucao', 'acao',
-            'acompanhamento', 'documentacao', 'compliance', 'responsabilidade', 'impacto', 'resultado', 'correcao', 'mitigacao',
-            'ferramenta', 'indicador', 'entregavel', 'plano', 'estrategia', 'aprendizado', 'crise'
-        ];
-
-        const verbosAcao = [
-            'identifico', 'analis', 'map', 'prioriz', 'document', 'aplic', 'comunico', 'defino', 'corrig', 'mitig',
-            'acompanho', 'reviso', 'estabelec', 'registro', 'monit', 'conduz', 'avali', 'planej', 'alinh'
-        ];
-
-        const conectores = ['porque', 'pois', 'entao', 'logo', 'portanto', 'quando', 'enquanto', 'assim', 'como resultado', 'para'];
-        const termosProfissionaisEncontrados = termosProfissionais.filter(termo => normalizado.includes(termo)).length;
-        const verbosEncontrados = verbosAcao.filter(verbo => normalizado.includes(verbo)).length;
-        const conectoresEncontrados = conectores.filter(conector => normalizado.includes(conector)).length;
+        const rubricas = pergunta.id === 13
+            ? [
+                /\b(projeto|produto|cliente|campanha|processo|contexto|prazo|equipe|situacao)\b/,
+                /\b(eu|meu|minha|assumi|liderei|responsavel)\b/,
+                /\b(trade-off|tradeoff|risco|custo|qualidade|escopo|alternativa|compromisso)\b/,
+                /\b(resultado|reduz\w*|aument\w*|entreg\w*|aprend\w*|mudaria|indicador|porcent\w*)\b/
+            ]
+            : [
+                /\b(projeto|produto|cliente|equipe|area|stakeholder|prioridade|prazo|situacao)\b/,
+                /\b(escut\w*|alinhei|negociei|apresentei|demonstrei|propus|testei|envolvi)\b/,
+                /\b(decid\w*|acord\w*|prioriz\w*|aprov\w*|mudou|escolheu|implement\w*)\b/,
+                /\b(resultado|impact\w*|prazo|aprend\w*|relacao|ating\w*|evit\w*)\b/
+            ];
+        const criteriosAtendidos = rubricas.filter(criterio => criterio.test(normalizado)).length;
         const temQuantidade = texto.trim().length >= pergunta.minimoCaracteres;
         const respostaGenerica = /(lorem ipsum|qualquer coisa|teste|bla|asdf|texto|aleatorio|copiar|colar)/i.test(texto);
         const repeticaoExcessiva = ((normalizado.match(/\b\w+\b/g) || []).filter(palavra => palavra.length > 3).length >= 200);
@@ -1805,30 +1943,30 @@
             return {
                 impacto: -20,
                 tipo: 'negativo',
-                mensagem: 'Resposta inadequada: o texto não apresentou raciocínio profissional suficiente, contexto real de negócio e ação estruturada (-20%).'
+                mensagem: 'Resposta inválida: não foi possível avaliar uma proposta de ação relacionada ao caso.'
             };
         }
 
-        if (temQuantidade && keywordsEncontradas.length >= 4 && termosProfissionaisEncontrados >= 4 && verbosEncontrados >= 2 && conectoresEncontrados >= 1) {
+        if (temQuantidade && criteriosAtendidos === rubricas.length) {
             return {
-                impacto: 18,
+                impacto: 20,
                 tipo: 'positivo',
-                mensagem: 'Resposta sólida: você mostrou análise profissional, ação concreta, senso de risco e solução prática (+18%).'
+                mensagem: 'Resposta forte: trouxe contexto, contribuição individual, trade-off e resultado ou aprendizado concreto.'
             };
         }
 
-        if (temQuantidade && keywordsEncontradas.length >= 2 && termosProfissionaisEncontrados >= 2 && verbosEncontrados >= 1) {
+        if (temQuantidade && criteriosAtendidos >= 3) {
             return {
-                impacto: 5,
+                impacto: 10,
                 tipo: 'neutro',
-                mensagem: 'Resposta aceitável, mas ainda falta aprofundamento em diagnóstico, prioridade e mecanismo de correção (+5%).'
+                mensagem: 'Resposta promissora, mas deixou um elemento importante do caso sem tratamento. Uma entrevista real pediria esclarecimento.'
             };
         }
 
         return {
             impacto: -12,
             tipo: 'negativo',
-            mensagem: 'Sua resposta ficou superficial. O texto precisava mostrar contexto profissional, ação concreta e solução orientada a impacto (-12%).'
+            mensagem: 'Resposta incompleta: faltou conectar diagnóstico, ação e consequência ao cenário apresentado.'
         };
     }
 
@@ -1848,6 +1986,15 @@
         const visual = renderCenaVisual();
 
         if (cena.tipo === 'objetiva') {
+            const opcoesEmbaralhadas = [...cena.opcoes];
+            for (let i = opcoesEmbaralhadas.length - 1; i > 0; i--) {
+                const indiceAleatorio = Math.floor(Math.random() * (i + 1));
+                [opcoesEmbaralhadas[i], opcoesEmbaralhadas[indiceAleatorio]] = [
+                    opcoesEmbaralhadas[indiceAleatorio],
+                    opcoesEmbaralhadas[i]
+                ];
+            }
+
             conteudo.innerHTML = `
             ${visual}
                 <div class="card">
@@ -1860,7 +2007,7 @@
 
                 <div id="feedback-box" class="feedback"></div>
                 <div id="opcoes-box">
-                    ${cena.opcoes.map((opcao, index) => `
+                    ${opcoesEmbaralhadas.map((opcao, index) => `
                         <button class="btn" data-index="${index}">${opcao.texto}</button>
                     `).join('')}
                 </div>
@@ -1868,7 +2015,7 @@
 
             document.querySelectorAll('.btn').forEach(botao => {
                 botao.addEventListener('click', () => {
-                    const opcao = cena.opcoes[Number(botao.dataset.index)];
+                    const opcao = opcoesEmbaralhadas[Number(botao.dataset.index)];
                     processarEscolha(opcao);
                 });
             });
@@ -1885,8 +2032,8 @@
 
                 <div id="feedback-box" class="feedback"></div>
 
-                <label class="resposta-label" for="resposta-descritiva">Sua resposta (até 3 linhas)</label>
-                <textarea id="resposta-descritiva" rows="3" maxlength="360" style="width:100%; border:1px solid #cbd5e1; border-radius:12px; padding:14px; font-size:14px; resize:vertical; margin-bottom:12px;" placeholder="Escreva de forma direta, em poucas linhas..."></textarea>
+                <label class="resposta-label" for="resposta-descritiva">Sua resposta (até 800 caracteres)</label>
+                <textarea id="resposta-descritiva" rows="5" maxlength="800" style="width:100%; border:1px solid #cbd5e1; border-radius:12px; padding:14px; font-size:14px; resize:vertical; margin-bottom:12px;" placeholder="Apresente contexto, sua contribuição, decisão e resultado concreto..."></textarea>
                 <button id="btn-responder" class="cta-btn">Enviar resposta</button>
             `;
 
@@ -1914,18 +2061,24 @@
 
     function processarEscolha(opcao) {
         pararTemporizador();
-        taxaAdmissao += opcao.impacto;
+        const pontos = converterImpactoEmPontos(
+            opcao.impacto,
+            cenas[cenaAtual].opcoes.map(item => item.impacto)
+        );
+        taxaAdmissao += pontos;
         atualizarBarra();
 
         historico.push({
             titulo: cenas[cenaAtual].titulo,
-            impacto: opcao.impacto,
-            tipo: opcao.tipo,
+            impacto: pontos,
+            tipo: 'objetiva',
+            classificacao: opcao.tipo,
             texto: opcao.texto
         });
 
         const feedbackBox = document.getElementById('feedback-box');
-        feedbackBox.innerText = `[Impacto: ${opcao.impacto > 0 ? '+' + opcao.impacto : opcao.impacto}%] ${opcao.consequencia}`;
+        const consequencia = opcao.consequencia.replace(/\s*\([+-]?\d+%\)\.?$/, '');
+        feedbackBox.innerText = `[Avaliação: ${pontos > 0 ? '+' : ''}${pontos} pontos] ${consequencia}`;
         feedbackBox.className = `feedback show feedback-${opcao.tipo}`;
 
         document.querySelectorAll('.btn').forEach(b => b.disabled = true);
@@ -1938,18 +2091,19 @@
 
     function processarRespostaDescritiva(avaliacao, texto) {
         pararTemporizador();
-        taxaAdmissao += avaliacao.impacto;
+        const pontos = converterImpactoEmPontos(avaliacao.impacto, [-12, 10, 20]);
+        taxaAdmissao += pontos;
         atualizarBarra();
 
         historico.push({
             titulo: cenas[cenaAtual].titulo,
-            impacto: avaliacao.impacto,
+            impacto: pontos,
             tipo: 'descritiva',
             texto
         });
 
         const feedbackBox = document.getElementById('feedback-box');
-        feedbackBox.innerText = avaliacao.mensagem;
+        feedbackBox.innerText = `${avaliacao.mensagem} (${pontos > 0 ? '+' : ''}${pontos} pontos).`;
         feedbackBox.className = `feedback show feedback-${avaliacao.tipo}`;
 
         document.getElementById('btn-responder').disabled = true;
@@ -1959,6 +2113,16 @@
             cenaAtual += 1;
             carregarCena();
         }, 2500);
+    }
+
+    function escaparHtml(texto) {
+        return texto.replace(/[&<>"']/g, caractere => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        })[caractere]);
     }
 
     function tratarTempoEsgotado() {
@@ -1973,20 +2137,26 @@
         }
 
         let punicao = -15;
-        let mensagem = '⏱️ Tempo esgotado! Sua resposta foi insuficiente e a avaliação penalizou sua pontuação.';
+        let mensagem = 'Tempo esgotado. A resposta não foi concluída dentro do tempo disponível.';
 
         if (cenaAtualObj.classePeso === 'peso-critico') {
             punicao = -30;
-            mensagem = '⏱️ Tempo esgotado! Em uma questão crítica, a hesitação foi interpretada como falta de firmeza (-30%).';
         } else if (cenaAtualObj.tipo === 'descritiva') {
-            mensagem = '⏱️ Tempo esgotado! Sua resposta não foi concluída a tempo e a pontuação caiu por falta de profundidade (-15%).';
+            mensagem = 'Tempo esgotado. Não foi possível avaliar uma resposta completa para este caso.';
         }
 
-        taxaAdmissao += punicao;
+        const pontos = punicao === -30 ? -5 : -3;
+        taxaAdmissao += pontos;
         atualizarBarra();
+        historico.push({
+            titulo: cenaAtualObj.titulo,
+            impacto: pontos,
+            tipo: cenaAtualObj.tipo,
+            texto: 'Tempo esgotado'
+        });
 
         const feedbackBox = document.getElementById('feedback-box');
-        feedbackBox.innerText = mensagem;
+        feedbackBox.innerText = `${mensagem} (${pontos} pontos).`;
         feedbackBox.className = 'feedback show feedback-negativo';
 
         setTimeout(() => {
@@ -2000,10 +2170,14 @@
         document.getElementById('timer-box').style.display = 'none';
 
         const positivas = historico.filter(item => item.impacto > 0).length;
-        const negativas = historico.filter(item => item.impacto < 0).length;
-        const neutras = historico.filter(item => item.impacto === 0).length;
         const melhor = [...historico].sort((a, b) => b.impacto - a.impacto)[0];
         const pior = [...historico].sort((a, b) => a.impacto - b.impacto)[0];
+        const textoMelhor = melhor
+            ? escaparHtml(melhor.texto.length > 120 ? melhor.texto.substring(0, 120) + '...' : melhor.texto)
+            : 'Sem resposta relevante';
+        const textoPior = pior
+            ? escaparHtml(pior.texto.length > 120 ? pior.texto.substring(0, 120) + '...' : pior.texto)
+            : 'Você manteve uma postura consistente.';
 
         let statusClass = 'status-reprovado';
         let statusTexto = 'Não aprovado';
@@ -2032,7 +2206,7 @@
                         <strong>${historico.filter(item => item.tipo === 'descritiva').length}</strong>
                     </div>
                     <div class="mini-card">
-                        <span>Acertos</span>
+                        <span>Avaliações favoráveis</span>
                         <strong>${positivas}</strong>
                     </div>
                     <div class="mini-card">
@@ -2044,14 +2218,41 @@
 
             <div class="card">
                 <h3>Resumo final</h3>
-                <p><strong>Melhor resposta:</strong> ${melhor ? (melhor.texto.length > 120 ? melhor.texto.substring(0, 120) + '...' : melhor.texto) : 'Sem resposta relevante'}</p>
-                <p style="margin-top: 10px;"><strong>Ponto de atenção:</strong> ${pior ? (pior.texto.length > 120 ? pior.texto.substring(0, 120) + '...' : pior.texto) : 'Você manteve uma postura consistente.'}</p>
+                <p><strong>Melhor resposta:</strong> ${textoMelhor}</p>
+                <p style="margin-top: 10px;"><strong>Ponto de atenção:</strong> ${textoPior}</p>
             </div>
 
-            <button class="btn" style="text-align: center; background: linear-gradient(180deg, #16a34a, #15803d); font-weight: 800;" onclick="reiniciarJogo()">
-                🔄 Refazer questionário
-            </button>
+            ${taxaAdmissao < 85 ? `
+                <div class="card">
+                    <h3>Uma segunda chance</h3>
+                    <p>Revise os pontos de atenção e escolha como quer continuar.</p>
+                    <button id="btn-repetir-cargo" class="btn" style="text-align: center; font-weight: 800;">
+                        🔄 Tentar novamente como ${perfis[perfilSelecionado].label}
+                    </button>
+                    <button id="btn-escolher-cargo" class="btn" style="text-align: center; font-weight: 800;">
+                        Escolher outro cargo para a próxima tentativa
+                    </button>
+                </div>
+            ` : `
+                <button id="btn-nova-entrevista" class="btn" style="text-align: center; font-weight: 800;">
+                    🔄 Fazer outra entrevista
+                </button>
+            `}
         `;
+
+        const repetirCargo = document.getElementById('btn-repetir-cargo');
+        if (repetirCargo) repetirCargo.addEventListener('click', iniciarNovaTentativa);
+        const escolherCargo = document.getElementById('btn-escolher-cargo');
+        if (escolherCargo) escolherCargo.addEventListener('click', () => {
+            segundaChance = true;
+            faseJogo = 'inicio';
+            renderInicio();
+        });
+        const novaEntrevista = document.getElementById('btn-nova-entrevista');
+        if (novaEntrevista) novaEntrevista.addEventListener('click', () => {
+            faseJogo = 'inicio';
+            renderInicio();
+        });
     }
 
     function reiniciarJogo() {

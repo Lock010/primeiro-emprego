@@ -46,58 +46,52 @@ def iniciar_jogo():
     # DECISÃO 1: A Chegada e Apresentação
     # -------------------------------------------------------------------------
     print("\n--- CENA 1: A Entrada na Sala ---")
-    texto_pausado("Você entra na sala. O entrevistador, Sr. Silva, está olhando alguns papéis.")
+    texto_pausado("Você chega à sala enquanto o entrevistador termina de resolver uma interrupção na agenda.")
     print("\nComo você reage ao entrar?")
-    print("1. Cumprimenta com um aperto de mão firme e um sorriso profissional.")
-    print("2. Senta-se imediatamente na cadeira sem esperar ser convidado.")
-    print("3. Faz uma piada descontraída para quebrar o gelo.")
+    print("1. Cumprimenta, confirma se o momento ainda é adequado e aguarda a orientação antes de se acomodar.")
+    print("2. Cumprimenta e se senta, deixando claro que está pronto para começar para não consumir o tempo reservado.")
+    print("3. Faz um comentário leve sobre o imprevisto e pergunta se prefere remarcar ou seguir com a conversa.")
 
     # Para adicionar/remover opções, atualize a lista ['1', '2', '3']
     escolha1 = obter_escolha(['1', '2', '3'])
 
     if escolha1 == '1':
-        texto_pausado("\n[Consequência]: O Sr. Silva sorri e retribui o aperto de mão com entusiasmo.")
-        pontos_desempenho += 2
+        texto_pausado("\n[Consequência]: Você demonstrou disponibilidade sem presumir que a entrevista poderia começar enquanto o entrevistador ainda cuidava do imprevisto.")
+        pontos_desempenho += 3
     elif escolha1 == '2':
         texto_pausado(
-            "\n[Consequência]: O Sr. Silva levanta uma sobrancelha, "
-            "parecendo notar a falta de etiqueta."
+            "\n[Consequência]: A intenção foi respeitar o horário, mas você presumiu que o entrevistador estava pronto para começar."
         )
-        pontos_desempenho -= 1
+        pontos_desempenho += 1
     elif escolha1 == '3':
-        texto_pausado("\n[Consequência]: O Sr. Silva dá uma risadinha sem graça, mas o clima fica um pouco estranho.")
-        pontos_desempenho += 0
+        texto_pausado("\n[Consequência]: Você ofereceu uma saída respeitosa, mas sugerir a remarcação antes de entender o impacto do imprevisto pode soar precipitado.")
+        pontos_desempenho += 2
 
     # -------------------------------------------------------------------------
-    # DECISÃO 2: A Pergunta de Ponto Fraco
+    # DECISÃO 2: Um ponto em desenvolvimento
     # -------------------------------------------------------------------------
-    print("\n--- CENA 2: A Pergunta Clássica ---")
-    texto_pausado("Sr. Silva: 'Me diga, qual é o seu maior ponto fraco?'")
+    print("\n--- CENA 2: Um ponto em desenvolvimento ---")
+    texto_pausado("Sr. Silva: 'Conte sobre uma habilidade que ainda está desenvolvendo e como percebe que está progredindo.'")
     print("\nComo você responde?")
-    print("1. 'Sou perfeccionista demais e acabo trabalhando até mais tarde.'")
-    print("2. 'Tenho dificuldade em delegar tarefas, mas estou praticando isso com ferramentas de gestão.'")
-    print("3. 'Honestamente? Tenho muita dificuldade em acordar cedo nos dias de chuva.'")
+    print("1. 'Eu costumava alternar entre tarefas demais; agora reservo blocos de foco e reviso semanalmente o que ainda ficou pendente.'")
+    print("2. 'Às vezes centralizo tarefas quando quero garantir qualidade. Tenho delegado partes com critérios claros e combinado pontos de revisão; isso já reduziu retrabalho no último projeto.'")
+    print("3. 'Tenho demorado a discordar de pessoas mais experientes. Passei a preparar perguntas antes das reuniões e estou tentando trazê-las quando surgem dúvidas.'")
 
     escolha2 = obter_escolha(['1', '2', '3'])
 
     if escolha2 == '1':
         texto_pausado(
-            "\n[Consequência]: O entrevistador suspira. Ele já ouviu "
-            "essa resposta clichê centenas de vezes."
+            "\n[Consequência]: Você apresentou uma estratégia concreta, mas faltou um exemplo de resultado que mostre se a mudança está funcionando."
         )
-        pontos_desempenho += 0
+        pontos_desempenho += 2
     elif escolha2 == '2':
         texto_pausado(
-            "\n[Consequência]: O Sr. Silva anota algo no bloco e acena "
-            "com a cabeça, impressionado com a autoconsciência."
+            "\n[Consequência]: Você conectou uma dificuldade específica a uma ação já testada e a um sinal observável de progresso."
         )
         pontos_desempenho += 3
     elif escolha2 == '3':
-        texto_pausado(
-            "\n[Consequência]: O Sr. Silva fica em silêncio por três "
-            "segundos. A sinceridade excessiva assustou a empresa."
-        )
-        pontos_desempenho -= 2
+        texto_pausado("\n[Consequência]: Você reconheceu uma dificuldade real e uma iniciativa, mas ainda não mostrou como verificará se está evoluindo.")
+        pontos_desempenho += 1
 
     # -------------------------------------------------------------------------
     # COMO ADICIONAR UMA NOVA DECISÃO (COPIE E COLE O BLOCO ABAIXO):
@@ -119,29 +113,23 @@ def iniciar_jogo():
     # DECISÃO 3: Pergunta do Candidato
     # -------------------------------------------------------------------------
     print("\n--- CENA 3: O Final da Entrevista ---")
-    texto_pausado("Sr. Silva: 'Certo, encerramos por aqui. Você tem alguma pergunta para mim?'")
+    texto_pausado("Sr. Silva: 'Certo, encerramos por aqui. O que você gostaria de entender melhor antes de decidir sobre a vaga?'")
     print("\nO que você pergunta?")
-    print("1. 'Quais são os principais desafios da equipe neste trimestre e como essa vaga impacta isso?'")
-    print("2. 'Qual é a política da empresa sobre folgas e banco de horas?'")
-    print("3. 'Não tenho nenhuma pergunta, ficou tudo bem claro.'")
+    print("1. 'Quais resultados indicariam que a pessoa nesta vaga teve um bom começo, e quais obstáculos podem dificultá-los?'")
+    print("2. 'Como a equipe costuma resolver divergências quando duas áreas têm prioridades diferentes?'")
+    print("3. 'Como funciona a rotina de trabalho e quais aspectos do pacote de remuneração são negociáveis?'")
 
     escolha3 = obter_escolha(['1', '2', '3'])
 
     if escolha3 == '1':
-        texto_pausado(
-            "\n[Consequência]: Os olhos do Sr. Silva brilham. Ele percebe "
-            "que você está focado em resultados."
-        )
+        texto_pausado("\n[Consequência]: Você descobriu como o desempenho será avaliado e abriu espaço para entender o contexto real da função.")
         pontos_desempenho += 3
     elif escolha3 == '2':
-        texto_pausado(
-            "\n[Consequência]: O entrevistador responde a dúvida, mas "
-            "parece achar que seu foco inicial está nos benefícios, não no trabalho."
-        )
-        pontos_desempenho -= 1
+        texto_pausado("\n[Consequência]: São dúvidas importantes para uma decisão informada, embora ainda falte esclarecer o que será esperado de você no trabalho.")
+        pontos_desempenho += 1
     elif escolha3 == '3':
-        texto_pausado("\n[Consequência]: O Sr. Silva apenas fecha a pasta. Pareceu uma oportunidade perdida de demonstrar interesse.")
-        pontos_desempenho += 0
+        texto_pausado("\n[Consequência]: Você investigou como a equipe colabora, uma dimensão relevante, mas não perguntou como o sucesso na vaga será reconhecido.")
+        pontos_desempenho += 2
 
     # -------------------------------------------------------------------------
     # AVALIAÇÃO DOS RESULTADOS (FINAIS COM BASE NAS CONSEQUÊNCIAS)
