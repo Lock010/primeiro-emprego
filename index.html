@@ -328,6 +328,294 @@
             margin-bottom: 12px;
         }
 
+        :root {
+            --bg-dark: #09070f;
+            --bg-soft: #15111e;
+            --panel: #17131f;
+            --text: #f2eef8;
+            --muted: #aaa1b8;
+            --blue: #a78bfa;
+            --blue-dark: #8b5cf6;
+            --green: #a3e635;
+            --purple: #a78bfa;
+            --shadow: rgba(0, 0, 0, 0.42);
+        }
+
+        body {
+            background-color: #08070b;
+            background-image: linear-gradient(145deg, #171020 0%, #09070d 48%, #100b18 100%);
+            color: var(--text);
+            font-family: ui-rounded, 'Trebuchet MS', sans-serif;
+        }
+
+        .container {
+            max-width: 900px;
+            padding: 30px;
+            background: rgba(17, 14, 23, 0.96);
+            border: 1px solid #30263d;
+            border-radius: 18px;
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55), 0 0 50px rgba(124, 58, 237, 0.09);
+        }
+
+        h1 {
+            color: #f7f2ff;
+            text-align: left;
+            margin-bottom: 24px;
+            font-size: clamp(1.55rem, 3vw, 2.15rem);
+        }
+
+        .info-header { color: #c4b8d5; }
+
+        .timer-box {
+            background: #211a2b;
+            border: 1px solid #49385c;
+            color: #e7ddf5;
+            box-shadow: none;
+        }
+
+        .meter-container {
+            background: #292231;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .meter-bar {
+            background: linear-gradient(90deg, #8b5cf6, #c084fc);
+            text-align: right;
+        }
+
+        hr { border-top-color: #30263d !important; }
+
+        .card,
+        .container #conteudo-jogo > .card[style] {
+            background: #1b1722 !important;
+            border: 1px solid #393044;
+            border-left: 4px solid #a78bfa;
+            border-radius: 10px;
+            box-shadow: none;
+        }
+
+        .card h3,
+        .card p,
+        .card strong,
+        .card { color: #f2eef8; }
+
+        .card p { color: #c6bdcf; }
+        .card h3 { color: #d7c2ff; }
+
+        .badge-peso { border-radius: 5px; }
+        .peso-baixo { background: #18372e; color: #a7f3d0; }
+        .peso-medio { background: #433319; color: #fcd98b; }
+        .peso-alto { background: #482c1c; color: #fdba74; }
+        .peso-critico { background: #49202d; color: #fda4af; }
+
+        .feedback { border-radius: 8px; }
+        .feedback-positivo { background: #14291f; color: #b8f2c9; border-color: #28543a; }
+        .feedback-neutro { background: #342817; color: #f7d98a; border-color: #5c4722; }
+        .feedback-negativo { background: #351b25; color: #ffc0ca; border-color: #63303e; }
+
+        .btn {
+            background: #211b2b;
+            border: 1px solid #3c304b;
+            border-radius: 8px;
+            color: #eee8f5;
+            box-shadow: none;
+        }
+
+        .btn:hover { background: #30243e; border-color: #9b72d5; }
+        .btn:disabled { background: #25212a; color: #8f8799; }
+
+        .start-panel .hero-card {
+            background: linear-gradient(120deg, #241a32, #191520) !important;
+            border-left-color: #b794f6;
+        }
+
+        .hero-card h3 { color: #e3d3ff; }
+
+        .perfil-card {
+            background: #191620;
+            border: 1px solid #393044;
+            border-radius: 8px;
+            color: #f2eef8;
+        }
+
+        .perfil-card strong { color: #e8d7ff; }
+        .perfil-card p { color: #b6adbf; }
+        .perfil-card:hover,
+        .perfil-card.selecionado {
+            border-color: #b794f6;
+            background: #211a2b;
+            box-shadow: 0 0 0 2px rgba(183, 148, 246, 0.12);
+        }
+
+        .cta-btn {
+            background: linear-gradient(110deg, #8b5cf6, #a855f7);
+            border-radius: 8px;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+        }
+
+        .mini-card { background: #211b29; border-color: #393044; }
+        .mini-card span { color: #b6adbf; }
+        .mini-card strong { color: #f2eef8; }
+        .resultado-badge { border-radius: 5px; }
+        .status-aprovado { background: #173325; color: #a7f3c0; }
+        .status-analise { background: #3a2c17; color: #f6d58b; }
+        .status-reprovado { background: #3d2029; color: #f8b5c0; }
+
+        .scene-stage {
+            --scene-a: #382552;
+            --scene-b: #191421;
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(210px, 0.85fr);
+            align-items: center;
+            gap: 20px;
+            min-height: 230px;
+            margin-bottom: 18px;
+            padding: 20px 22px 12px;
+            overflow: hidden;
+            border: 1px solid #49375e;
+            border-radius: 12px;
+            background: linear-gradient(125deg, var(--scene-a), #211a2a 64%, var(--scene-b));
+            transition: background 450ms ease;
+        }
+
+        .scene-stage::before {
+            position: absolute;
+            inset: auto 0 0;
+            height: 46px;
+            background: linear-gradient(180deg, transparent, rgba(5, 4, 8, 0.42));
+            content: '';
+            pointer-events: none;
+        }
+
+        .scene-stage[data-cenario="recepcao"] { --scene-a: #29404a; --scene-b: #392752; }
+        .scene-stage[data-cenario="apresentacao"] { --scene-a: #3b2756; --scene-b: #25203a; }
+        .scene-stage[data-cenario="equipe"] { --scene-a: #344150; --scene-b: #3d294a; }
+        .scene-stage[data-cenario="cliente"] { --scene-a: #49313d; --scene-b: #28203a; }
+        .scene-stage[data-cenario="planejamento"] { --scene-a: #29443f; --scene-b: #30294a; }
+        .scene-stage[data-cenario="etica"] { --scene-a: #40333d; --scene-b: #29233e; }
+        .scene-stage[data-cenario="negociacao"] { --scene-a: #4a3b2b; --scene-b: #302440; }
+        .scene-stage[data-cenario="metas"] { --scene-a: #293e48; --scene-b: #3e2b4c; }
+        .scene-stage[data-cenario="reuniao"] { --scene-a: #343550; --scene-b: #412c49; }
+        .scene-stage[data-cenario="prioridades"] { --scene-a: #364332; --scene-b: #2d2544; }
+        .scene-stage[data-cenario="stakeholders"] { --scene-a: #3b304a; --scene-b: #253a43; }
+        .scene-stage[data-cenario="feedback"] { --scene-a: #49313b; --scene-b: #302443; }
+        .scene-stage[data-cenario="processo"] { --scene-a: #283f47; --scene-b: #37294a; }
+        .scene-stage[data-cenario="conversa"] { --scene-a: #45313f; --scene-b: #283b43; }
+        .scene-stage[data-cenario="compliance"] { --scene-a: #343b4b; --scene-b: #432d48; }
+
+        .scene-copy,
+        .scene-characters { position: relative; z-index: 1; }
+
+        .scene-kicker {
+            margin: 0 0 10px;
+            color: #d5baff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .speech-bubble {
+            position: relative;
+            margin: 0;
+            padding: 13px 15px;
+            border: 1px solid rgba(229, 213, 255, 0.24);
+            border-radius: 10px;
+            background: rgba(17, 13, 24, 0.76);
+            color: #faf7ff;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .speech-bubble::after {
+            position: absolute;
+            right: 22px;
+            bottom: -7px;
+            width: 12px;
+            height: 12px;
+            border-right: 1px solid rgba(229, 213, 255, 0.24);
+            border-bottom: 1px solid rgba(229, 213, 255, 0.24);
+            background: #17131f;
+            content: '';
+            transform: rotate(45deg);
+        }
+
+        .scene-caption {
+            margin: 12px 0 0;
+            color: #d0c6dc;
+            font-size: 12px;
+        }
+
+        .scene-characters {
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            gap: 8px;
+            align-self: end;
+            min-width: 0;
+        }
+
+        .character {
+            display: grid;
+            justify-items: center;
+            width: min(48%, 145px);
+            margin: 0;
+        }
+
+        .character svg { display: block; width: 100%; height: auto; overflow: visible; }
+        .character figcaption {
+            margin-top: -2px;
+            color: #e3d7f2;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .character .body-coat { fill: #7451a8; stroke: #160f20; stroke-width: 5; }
+        .character.candidate .body-coat { fill: #446f78; }
+        .character .shirt { fill: #f0e8f7; }
+        .character .skin { fill: #d99b73; stroke: #211622; stroke-width: 4; }
+        .character .hair { fill: #30212a; stroke: #211622; stroke-width: 4; }
+        .character .eye { fill: #251c29; }
+        .character .brow,
+        .character .mouth { fill: none; stroke: #38232a; stroke-linecap: round; stroke-width: 4; }
+        .character .mouth { display: none; }
+        .character .face-curioso .brow-left { transform: rotate(-9deg); transform-origin: 77px 91px; }
+        .character .face-curioso .brow-right { transform: rotate(9deg); transform-origin: 119px 91px; }
+        .character .face-preocupado .brow-left { transform: rotate(12deg); transform-origin: 77px 91px; }
+        .character .face-preocupado .brow-right { transform: rotate(-12deg); transform-origin: 119px 91px; }
+        .character .face-confiante .brow-left { transform: rotate(-8deg); transform-origin: 77px 91px; }
+        .character .face-confiante .brow-right { transform: rotate(-8deg); transform-origin: 119px 91px; }
+        .character .face-pensativo .brow-left { transform: translateY(3px); }
+        .character .face-pensativo .brow-right { transform: translateY(3px); }
+        .character .face-curioso .mouth-curioso,
+        .character .face-preocupado .mouth-preocupado,
+        .character .face-confiante .mouth-confiante,
+        .character .face-pensativo .mouth-pensativo { display: block; }
+
+        #resposta-descritiva {
+            background: #15121a;
+            color: #f2eef8;
+            border-color: #49385c !important;
+        }
+        #resposta-descritiva::placeholder { color: #8f869c; }
+
+        @media (max-width: 640px) {
+            .container { padding: 22px 18px; }
+            h1 { text-align: center; }
+            .scene-stage {
+                grid-template-columns: 1fr;
+                gap: 4px;
+                min-height: 0;
+                padding: 16px 14px 8px;
+            }
+            .scene-characters { max-width: 290px; margin: -4px auto 0; }
+            .character { width: min(44%, 112px); }
+            .speech-bubble { font-size: 13px; }
+        }
+
         .status-aprovado {
             background: #dcfce7;
             color: #166534;
@@ -356,6 +644,171 @@
             .card-header {
                 align-items: flex-start;
             }
+        }
+
+        .modo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .modo-card {
+            display: grid;
+            gap: 6px;
+            min-height: 76px;
+            padding: 14px;
+            border: 1px solid #393044;
+            border-radius: 8px;
+            background: #191620;
+            color: #f2eef8;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .modo-card strong { color: #e8d7ff; }
+        .modo-card span { color: #b6adbf; font-size: 12px; line-height: 1.45; }
+        .modo-card.selecionado { border-color: #b794f6; background: #251d30; }
+        .modo-card:focus-visible,
+        .perfil-card:focus-visible,
+        .lobby-action:focus-visible,
+        .move-key:focus-visible { outline: 2px solid #d7baff; outline-offset: 3px; }
+
+        .lobby-panel {
+            overflow: hidden;
+            border: 1px solid #49375e;
+            border-radius: 10px;
+            background: #100e14;
+        }
+
+        .lobby-heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: baseline;
+            padding: 12px 15px;
+            color: #e4d7f4;
+            font-size: 12px;
+        }
+
+        .lobby-heading strong { color: #d5baff; }
+        .lobby-canvas-wrap { position: relative; overflow: hidden; background: #17151a; }
+        #lobby-canvas,
+        .scene-art {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+        }
+
+        #lobby-canvas { touch-action: none; }
+
+        .lobby-dialog {
+            min-height: 54px;
+            padding: 12px 15px;
+            border-top: 1px solid #30263d;
+            color: #e9e1f1;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .lobby-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 0 15px 14px;
+        }
+
+        .lobby-action {
+            width: auto;
+            margin: 0;
+            padding: 9px 13px;
+            border-radius: 6px;
+            background: #292033;
+            font-size: 12px;
+        }
+
+        .lobby-action.primary { background: #8152c2; border-color: #a477df; }
+        .lobby-action:disabled { opacity: 0.42; }
+
+        .lobby-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 0 15px 14px;
+            color: #aaa1b8;
+            font-size: 11px;
+        }
+
+        .move-pad { display: none; grid-template-columns: repeat(3, 38px); grid-template-rows: repeat(2, 34px); gap: 4px; }
+        .move-key {
+            border: 1px solid #49385c;
+            border-radius: 5px;
+            background: #211a2b;
+            color: #eee8f5;
+            font-weight: 800;
+            touch-action: none;
+        }
+        .move-key[data-dir="up"] { grid-column: 2; }
+        .move-key[data-dir="left"] { grid-column: 1; grid-row: 2; }
+        .move-key[data-dir="down"] { grid-column: 2; grid-row: 2; }
+        .move-key[data-dir="right"] { grid-column: 3; grid-row: 2; }
+
+        .scene-stage {
+            display: block;
+            position: relative;
+            min-height: 0;
+            height: clamp(250px, 42vw, 390px);
+            padding: 0;
+            aspect-ratio: 16 / 9;
+            border-radius: 10px;
+            background: #17151a;
+            isolation: isolate;
+        }
+
+        .scene-stage .scene-art { position: absolute; inset: 0; height: 100%; }
+        .scene-stage .scene-art { animation: scene-arrive 420ms ease-out both; }
+        @keyframes scene-arrive {
+            from { opacity: 0.45; transform: scale(1.035); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .scene-stage .scene-copy {
+            position: absolute;
+            z-index: 1;
+            right: auto;
+            bottom: 18px;
+            left: 18px;
+            width: min(52%, 430px);
+            padding: 14px;
+            border: 1px solid rgba(230, 216, 247, 0.22);
+            border-radius: 8px;
+            background: rgba(15, 12, 19, 0.83);
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(5px);
+        }
+
+        .scene-stage .scene-kicker { margin-bottom: 6px; }
+        .scene-stage .speech-bubble { padding: 0; border: 0; background: transparent; font-size: 14px; }
+        .scene-stage .speech-bubble::after { display: none; }
+        .scene-stage .scene-caption { margin-top: 6px; font-size: 11px; }
+        .scene-stage .scene-characters { display: none; }
+
+        .resposta-label {
+            display: block;
+            margin: 0 0 8px;
+            color: #d7c2ff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            .modo-grid { grid-template-columns: 1fr; }
+            .lobby-controls { align-items: flex-start; }
+            .move-pad { display: grid; flex: 0 0 auto; }
+            .scene-stage { height: 270px; }
+            .scene-stage .scene-copy { right: 10px; bottom: 10px; left: 10px; width: auto; padding: 11px; }
+            .scene-stage .speech-bubble { font-size: 13px; }
+            .lobby-heading span { text-align: right; }
         }
     </style>
 </head>
@@ -402,7 +855,7 @@
 
     const TEMPO_POR_TIPO = {
         objetiva: 20,
-        descritiva: 90
+        descritiva: 60
     };
 
     let taxaAdmissao = 50;
@@ -410,7 +863,23 @@
     let tempoRestante = TEMPO_POR_TIPO.objetiva;
     let timerInterval = null;
     let perfilSelecionado = 'analista';
+    let modoSelecionado = 'completo';
     let historico = [];
+    let faseJogo = 'inicio';
+    let lobbyAnimation = null;
+    let lastLobbyFrame = 0;
+    let tempoAnimacao = 0;
+    let movimentoJogador = false;
+    let animacaoCenario = null;
+    let teclaMovimento = new Set();
+    let dialogoLobby = 'Boa tarde! Você chegou para a entrevista. Pode explorar a recepção e conversar com a equipe.';
+    let jogadorLobby = { x: 145, y: 365, destinoX: 145, destinoY: 365 };
+    let personagensLobby = [
+        { id: 'marina', nome: 'Marina', cargo: 'Recepcionista', x: 360, y: 354, cor: '#73529a', ativo: true },
+        { id: 'rafael', nome: 'Rafael', cargo: 'Candidato', x: 480, y: 365, cor: '#547c70', ativo: true },
+        { id: 'ana', nome: 'Ana', cargo: 'Entrevistadora', x: 740, y: 316, cor: '#72528f', ativo: true }
+    ];
+    let nomeJogador = 'Você';
 
     const perguntasExtrasNervosismo = [
         {
@@ -588,36 +1057,591 @@
         {
             id: 13,
             tipo: 'descritiva',
-            titulo: 'Questão 13: análise de processo',
+            titulo: 'Questão 13: melhorar um processo',
             peso: 'Crítico',
             classePeso: 'peso-critico',
-            texto: 'Descreva, em 5 a 8 linhas, como você identificaria e corrigiria um processo de atendimento que está gerando atrasos constantes e reclamações de clientes.',
-            palavrasChave: ['cliente', 'dados', 'problema', 'processo', 'prioridade', 'métricas', 'ação', 'melhoria'],
-            minimoCaracteres: 120
+            texto: 'O atendimento está atrasando. Em até 3 linhas, diga como descobriria a causa e melhoraria o processo.',
+            palavrasChave: ['cliente', 'dados', 'processo', 'prioridade', 'ação', 'melhoria'],
+            minimoCaracteres: 60
         },
         {
             id: 14,
             tipo: 'descritiva',
-            titulo: 'Questão 14: conflito e liderança',
+            titulo: 'Questão 14: conversa difícil',
             peso: 'Crítico',
             classePeso: 'peso-critico',
-            texto: 'Explique em 5 a 8 linhas como você conduziria uma conversa difícil com um colaborador que cometeu um erro grave e ainda está defensivo.',
-            palavrasChave: ['erro', 'responsabilidade', 'diálogo', 'apoio', 'objetivo', 'correção', 'consequência', 'aprendizado'],
-            minimoCaracteres: 120
-        },
-        {
-            id: 15,
-            tipo: 'descritiva',
-            titulo: 'Questão 15: ética e tomada de decisão',
-            peso: 'Crítico',
-            classePeso: 'peso-critico',
-            texto: 'Em 5 a 8 linhas, descreva como você agiria se visse um colega pressionando um relatório para esconder um problema de qualidade ou de compliance.',
-            palavrasChave: ['ética', 'compliance', 'dados', 'relatório', 'responsabilidade', 'solução', 'transparência', 'código'],
-            minimoCaracteres: 120
+            texto: 'Uma pessoa da equipe cometeu um erro e está na defensiva. Em até 3 linhas, como você conversaria com ela?',
+            palavrasChave: ['erro', 'responsabilidade', 'diálogo', 'apoio', 'correção', 'aprendizado'],
+            minimoCaracteres: 60
         }
     ];
 
+    const cenariosVisuais = [
+        { cenario: 'recepcao', local: 'Recepção em movimento', fala: 'A equipe está lidando com uma falha agora. Como você se comporta ao chegar?', legenda: 'A primeira impressão começa antes da conversa.', entrevistador: 'preocupado', candidato: 'pensativo' },
+        { cenario: 'apresentacao', local: 'Sala de entrevista', fala: 'Você tem 60 segundos. Conte sua trajetória e o valor que entrega.', legenda: 'Clareza e foco ajudam sua história a aparecer.', entrevistador: 'curioso', candidato: 'confiante' },
+        { cenario: 'equipe', local: 'Reunião de equipe', fala: 'O time cometeu um erro importante. Como você conduz a situação?', legenda: 'Responsabilidade também é mostrar o próximo passo.', entrevistador: 'pensativo', candidato: 'pensativo' },
+        { cenario: 'cliente', local: 'Chamada com cliente', fala: 'Um cliente está prestes a cancelar. O que você faz primeiro?', legenda: 'Escuta, ação e confiança precisam caminhar juntas.', entrevistador: 'preocupado', candidato: 'confiante' },
+        { cenario: 'planejamento', local: 'Quadro de planejamento', fala: 'O prazo apertou e o orçamento diminuiu. Por onde você começa?', legenda: 'Diagnosticar o gargalo evita aumentar o problema.', entrevistador: 'curioso', candidato: 'pensativo' },
+        { cenario: 'etica', local: 'Revisão de contrato', fala: 'Pedem para alterar dados para renovar um contrato. Qual é sua decisão?', legenda: 'Integridade profissional não é negociável.', entrevistador: 'pensativo', candidato: 'confiante' },
+        { cenario: 'negociacao', local: 'Conversa sobre proposta', fala: 'Como você apresenta sua expectativa salarial com segurança?', legenda: 'Valor e contexto tornam a negociação mais forte.', entrevistador: 'curioso', candidato: 'confiante' },
+        { cenario: 'metas', local: 'Encerramento da entrevista', fala: 'Que pergunta mostraria sua curiosidade sobre o trabalho?', legenda: 'Interesse genuíno também olha para os resultados.', entrevistador: 'confiante', candidato: 'curioso' },
+        { cenario: 'reuniao', local: 'Reunião de decisão', fala: 'Uma pessoa discorda da sua decisão diante do grupo. Como responde?', legenda: 'Ouvir com abertura não significa perder a direção.', entrevistador: 'curioso', candidato: 'pensativo' },
+        { cenario: 'prioridades', local: 'Painel de tarefas', fala: 'Há três urgências, riscos diferentes e um prazo de cliente. Como prioriza?', legenda: 'Impacto e dependências ajudam a ordenar o trabalho.', entrevistador: 'pensativo', candidato: 'confiante' },
+        { cenario: 'stakeholders', local: 'Alinhamento de projeto', fala: 'Um prazo importante vai atrasar. Como você avisa a liderança?', legenda: 'Antecedência e plano de ação preservam confiança.', entrevistador: 'preocupado', candidato: 'confiante' },
+        { cenario: 'feedback', local: 'Conversa de feedback', fala: 'Você recebeu uma crítica pública. Como transforma isso em aprendizado?', legenda: 'Maturidade aparece na forma de seguir em frente.', entrevistador: 'pensativo', candidato: 'pensativo' },
+        { cenario: 'processo', local: 'Central de atendimento', fala: 'Atrasos e reclamações se repetem. Como investigaria e corrigiria o processo?', legenda: 'Use dados para encontrar a causa e medir a melhora.', entrevistador: 'curioso', candidato: 'pensativo' },
+        { cenario: 'conversa', local: 'Conversa individual', fala: 'Uma pessoa errou e está na defensiva. Como conduziria o diálogo?', legenda: 'Firmeza e apoio podem fazer parte da mesma conversa.', entrevistador: 'preocupado', candidato: 'confiante' },
+        { cenario: 'compliance', local: 'Revisão de qualidade', fala: 'Você percebe uma tentativa de esconder um problema no relatório. O que faria?', legenda: 'Transparência protege as pessoas e o negócio.', entrevistador: 'pensativo', candidato: 'confiante' }
+    ];
+
     let cenas = [...perguntas];
+
+    const paletasCenario = {
+        recepcao: ['#28383c', '#a8c1ba', '#4a5d55'],
+        apresentacao: ['#302d42', '#a9aec6', '#51485d'],
+        equipe: ['#34404a', '#b6c4c1', '#4b5457'],
+        cliente: ['#43373b', '#c5b9ad', '#5c4843'],
+        planejamento: ['#344239', '#bfbea1', '#4e5748'],
+        etica: ['#393b43', '#c0bdb3', '#55505b'],
+        negociacao: ['#403a32', '#c6bcae', '#5d5042'],
+        metas: ['#293b43', '#b4c4c3', '#4d5d5a'],
+        reuniao: ['#363847', '#b9bac9', '#565361'],
+        prioridades: ['#354137', '#c0c3ae', '#4b594a'],
+        stakeholders: ['#373747', '#c1bdc7', '#514c5f'],
+        feedback: ['#42373d', '#c4b5b3', '#5c4c4b'],
+        processo: ['#2e4143', '#b8c6bd', '#4b5b54'],
+        conversa: ['#40383f', '#c3b8b2', '#584c4d'],
+        compliance: ['#353d49', '#b9c0c7', '#4e535e']
+    };
+
+    function drawOfficeRoom(context, sceneKey) {
+        const [wallColor, windowColor, floorColor] = paletasCenario[sceneKey] || paletasCenario.recepcao;
+        const wall = context.createLinearGradient(0, 0, 0, 370);
+        wall.addColorStop(0, '#25242a');
+        wall.addColorStop(0.18, wallColor);
+        wall.addColorStop(1, '#3a3436');
+        context.fillStyle = wall;
+        context.fillRect(0, 0, 960, 540);
+
+        const ceiling = context.createLinearGradient(0, 0, 0, 100);
+        ceiling.addColorStop(0, '#16171c');
+        ceiling.addColorStop(1, '#333137');
+        context.fillStyle = ceiling;
+        context.fillRect(0, 0, 960, 92);
+        context.fillStyle = 'rgba(255, 235, 199, 0.16)';
+        context.fillRect(120, 35, 190, 8);
+        context.fillRect(610, 35, 190, 8);
+
+        const daylight = context.createRadialGradient(220, 160, 12, 220, 170, 330);
+        daylight.addColorStop(0, 'rgba(232, 237, 215, 0.35)');
+        daylight.addColorStop(1, 'rgba(232, 237, 215, 0)');
+        context.fillStyle = daylight;
+        context.fillRect(0, 65, 650, 370);
+
+        context.fillStyle = '#191d23';
+        context.fillRect(45, 88, 280, 213);
+        const glass = context.createLinearGradient(50, 90, 320, 295);
+        glass.addColorStop(0, windowColor);
+        glass.addColorStop(1, '#455765');
+        context.fillStyle = glass;
+        context.fillRect(53, 96, 264, 197);
+        context.fillStyle = 'rgba(245, 231, 194, 0.34)';
+        context.fillRect(63, 110, 72, 172);
+        context.fillStyle = 'rgba(27, 33, 42, 0.68)';
+        [[150, 198, 28, 85], [184, 168, 36, 115], [228, 188, 31, 95], [267, 153, 39, 130]].forEach(([x, y, w, h]) => context.fillRect(x, y, w, h));
+        context.fillStyle = '#272a31';
+        context.fillRect(177, 94, 8, 201);
+        context.fillRect(50, 190, 270, 8);
+        context.fillStyle = '#36323a';
+        context.fillRect(37, 300, 297, 12);
+
+        context.fillStyle = '#4c4747';
+        context.fillRect(375, 116, 250, 118);
+        context.fillStyle = '#857b74';
+        context.fillRect(384, 124, 232, 102);
+        context.fillStyle = 'rgba(224, 213, 193, 0.42)';
+        context.fillRect(397, 139, 119, 4);
+        context.fillRect(397, 153, 184, 3);
+        context.fillRect(397, 166, 166, 3);
+        context.fillStyle = '#7f6651';
+        context.fillRect(522, 183, 77, 32);
+        context.fillStyle = '#b89b73';
+        context.fillRect(531, 190, 17, 18);
+        context.fillRect(555, 190, 35, 4);
+
+        const floor = context.createLinearGradient(0, 300, 0, 540);
+        floor.addColorStop(0, floorColor);
+        floor.addColorStop(1, '#1f2022');
+        context.fillStyle = floor;
+        context.beginPath();
+        context.moveTo(0, 310);
+        context.lineTo(960, 310);
+        context.lineTo(960, 540);
+        context.lineTo(0, 540);
+        context.closePath();
+        context.fill();
+        context.strokeStyle = 'rgba(218, 203, 183, 0.13)';
+        context.lineWidth = 2;
+        for (let x = -240; x <= 1200; x += 150) {
+            context.beginPath();
+            context.moveTo(480 + (x - 480) * 0.18, 310);
+            context.lineTo(x, 540);
+            context.stroke();
+        }
+        for (let y = 355; y < 540; y += 44) {
+            context.beginPath();
+            context.moveTo(0, y);
+            context.lineTo(960, y);
+            context.stroke();
+        }
+
+        const sceneProps = {
+            recepcao: { desk: 670, accent: '#75559b' },
+            apresentacao: { desk: 550, accent: '#6a6693' },
+            equipe: { desk: 500, accent: '#597d72' },
+            cliente: { desk: 625, accent: '#946a58' },
+            planejamento: { desk: 570, accent: '#74834d' },
+            etica: { desk: 635, accent: '#77718b' },
+            negociacao: { desk: 585, accent: '#9b7d59' },
+            metas: { desk: 610, accent: '#517f8b' },
+            reuniao: { desk: 530, accent: '#766d9d' },
+            prioridades: { desk: 585, accent: '#67805e' },
+            stakeholders: { desk: 610, accent: '#71678c' },
+            feedback: { desk: 590, accent: '#936d71' },
+            processo: { desk: 560, accent: '#4d7c74' },
+            conversa: { desk: 610, accent: '#8a6871' },
+            compliance: { desk: 600, accent: '#627995' }
+        }[sceneKey] || { desk: 670, accent: '#75559b' };
+
+        context.fillStyle = 'rgba(7, 8, 11, 0.25)';
+        context.fillRect(sceneProps.desk - 8, 355, 280, 34);
+        context.fillStyle = '#28252a';
+        context.beginPath();
+        context.moveTo(sceneProps.desk, 300);
+        context.lineTo(sceneProps.desk + 250, 300);
+        context.lineTo(sceneProps.desk + 280, 340);
+        context.lineTo(sceneProps.desk - 26, 340);
+        context.closePath();
+        context.fill();
+        context.fillStyle = sceneProps.accent;
+        context.beginPath();
+        context.moveTo(sceneProps.desk - 26, 340);
+        context.lineTo(sceneProps.desk + 280, 340);
+        context.lineTo(sceneProps.desk + 256, 424);
+        context.lineTo(sceneProps.desk - 4, 424);
+        context.closePath();
+        context.fill();
+        context.fillStyle = 'rgba(255, 255, 255, 0.16)';
+        context.fillRect(sceneProps.desk - 16, 340, 290, 5);
+        context.fillStyle = '#28252a';
+        context.fillRect(sceneProps.desk + 34, 424, 12, 40);
+        context.fillRect(sceneProps.desk + 211, 424, 12, 40);
+
+        context.fillStyle = '#39363a';
+        context.fillRect(85, 344, 120, 12);
+        context.fillRect(97, 356, 9, 94);
+        context.fillRect(184, 356, 9, 94);
+        context.fillStyle = '#5a504f';
+        context.fillRect(94, 332, 102, 16);
+        context.fillStyle = '#4c6652';
+        context.fillRect(845, 270, 10, 99);
+        [[800, 251], [821, 224], [849, 207], [868, 242], [881, 272], [818, 279]].forEach(([x, y], index) => {
+            context.fillStyle = index % 2 ? '#65795d' : '#4f7058';
+            context.beginPath();
+            context.ellipse(x, y, 16, 39, (index - 2) * 0.22, 0, Math.PI * 2);
+            context.fill();
+        });
+        context.fillStyle = '#55433c';
+        context.fillRect(829, 365, 45, 27);
+        context.fillStyle = 'rgba(15, 12, 18, 0.24)';
+        context.fillRect(0, 0, 960, 540);
+
+        if (['equipe', 'reuniao', 'prioridades', 'processo'].includes(sceneKey)) {
+            context.fillStyle = '#25292b';
+            context.fillRect(350, 250, 230, 8);
+            context.fillStyle = sceneProps.accent;
+            context.fillRect(366, 195, 45, 48);
+            context.fillRect(421, 211, 45, 32);
+            context.fillRect(476, 178, 45, 65);
+            context.fillStyle = '#d8cba7';
+            context.fillRect(375, 208, 27, 4);
+            context.fillRect(431, 223, 26, 4);
+            context.fillRect(486, 190, 25, 4);
+        } else if (['cliente', 'stakeholders', 'negociacao'].includes(sceneKey)) {
+            context.fillStyle = '#2b3034';
+            context.fillRect(366, 118, 250, 132);
+            context.fillStyle = '#1b282a';
+            context.fillRect(374, 126, 234, 116);
+            context.fillStyle = 'rgba(191, 219, 215, 0.5)';
+            context.fillRect(391, 144, 91, 3);
+            context.fillRect(391, 157, 153, 3);
+            context.fillStyle = sceneProps.accent;
+            context.beginPath();
+            context.arc(557, 185, 25, Math.PI, Math.PI * 1.92);
+            context.strokeStyle = sceneProps.accent;
+            context.lineWidth = 9;
+            context.stroke();
+        } else if (['etica', 'compliance', 'feedback', 'conversa'].includes(sceneKey)) {
+            context.fillStyle = '#28272d';
+            context.fillRect(350, 122, 226, 120);
+            context.fillStyle = '#cbc1ad';
+            context.fillRect(365, 137, 195, 90);
+            context.fillStyle = '#78736b';
+            context.fillRect(383, 154, 110, 4);
+            context.fillRect(383, 169, 155, 3);
+            context.fillRect(383, 182, 141, 3);
+            context.fillStyle = '#8a4f5b';
+            context.fillRect(383, 200, 52, 12);
+        } else if (['apresentacao', 'metas'].includes(sceneKey)) {
+            context.fillStyle = '#252a2d';
+            context.fillRect(352, 117, 245, 134);
+            context.fillStyle = '#b8c5bd';
+            context.fillRect(361, 126, 227, 116);
+            context.fillStyle = sceneProps.accent;
+            context.fillRect(384, 207, 21, 26);
+            context.fillRect(419, 184, 21, 49);
+            context.fillRect(454, 165, 21, 68);
+            context.fillStyle = '#625b55';
+            context.fillRect(378, 233, 184, 4);
+        }
+
+        const vignette = context.createRadialGradient(480, 260, 100, 480, 260, 620);
+        vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        vignette.addColorStop(1, 'rgba(0, 0, 0, 0.38)');
+        context.fillStyle = vignette;
+        context.fillRect(0, 0, 960, 540);
+    }
+
+    function drawPixelCharacter(
+        context,
+        x,
+        baseline,
+        coat,
+        expression = 'neutral',
+        time = 0,
+        scale = 1,
+        walking = false,
+        speaking = false
+    ) {
+        const unit = 7 * scale;
+        const walkPhase = time * 11;
+        const stride = walking ? Math.sin(walkPhase) : Math.sin(time * 2.2) * 0.08;
+        const bounce = walking ? Math.abs(Math.sin(walkPhase)) * 1.5 : Math.sin(time * 2.4) * 0.55;
+        const blink = Math.sin(time * 1.7 + 0.8) > 0.994;
+        const block = (column, row, width, height, color) => {
+            context.fillStyle = color;
+            context.fillRect(
+                Math.round(x + column * unit),
+                Math.round(baseline + row * unit),
+                width * unit,
+                height * unit
+            );
+        };
+
+        context.fillStyle = 'rgba(10, 8, 12, 0.28)';
+        context.beginPath();
+        context.ellipse(
+            x + unit * 5,
+            baseline + unit * 18,
+            unit * (6 - bounce * 0.12),
+            unit * 1.1,
+            0,
+            0,
+            Math.PI * 2
+        );
+        context.fill();
+
+        const leftLegY = Math.max(0, Math.round(stride * 1.4));
+        const rightLegY = Math.max(0, Math.round(-stride * 1.4));
+        block(2, 13 + leftLegY, 2, 4 - leftLegY, '#29252c');
+        block(6, 13 + rightLegY, 2, 4 - rightLegY, '#29252c');
+        block(1, 17 + leftLegY, 3, 1, '#15141a');
+        block(6, 17 + rightLegY, 3, 1, '#15141a');
+
+        const bodyBob = Math.round(bounce * 0.35);
+        const armSwing = walking ? Math.round(stride) : 0;
+        block(1, 7 + bodyBob, 8, 6, '#17141c');
+        block(2, 6 + bodyBob, 7, 7, coat);
+        block(1, 7 + bodyBob + armSwing, 2, 4, coat);
+        block(0, 10 + bodyBob + armSwing, 2, 2, '#d59b76');
+        block(8, 7 + bodyBob - armSwing, 2, 4, coat);
+        block(8, 10 + bodyBob - armSwing, 2, 2, '#d59b76');
+        block(2, 7 + bodyBob, 1, 5, 'rgba(255, 255, 255, 0.2)');
+        block(8, 7 + bodyBob, 1, 5, 'rgba(10, 8, 14, 0.24)');
+        block(4, 7 + bodyBob, 2, 6, '#f0e9e0');
+        block(3, 6 + bodyBob, 2, 2, '#d59b76');
+        block(6, 6 + bodyBob, 2, 2, '#d59b76');
+        block(4, 9 + bodyBob, 2, 1, '#8b5e91');
+        block(4, 11 + bodyBob, 1, 1, '#d7c7e4');
+        block(6, 8 + bodyBob, 2, 2, '#d5c49f');
+        block(6, 8 + bodyBob, 1, 1, '#f3e3b9');
+
+        const headBob = Math.round(bounce * 0.45);
+        block(3, 2 + headBob, 5, 5, '#b87556');
+        block(2, 3 + headBob, 1, 3, '#d59b76');
+        block(8, 3 + headBob, 1, 3, '#d59b76');
+        block(3, 2 + headBob, 5, 1, '#edb48e');
+        block(2, 1 + headBob, 7, 2, '#30252a');
+        block(2, 2 + headBob, 2, 3, '#30252a');
+        block(7, 2 + headBob, 2, 2, '#30252a');
+        block(4, 3 + headBob, 2, 1, '#30252a');
+        block(7, 4 + headBob, 1, 1, '#30252a');
+        block(3, 5 + headBob, 1, 1, '#e18a78');
+
+        block(4, 4 + headBob, 1, blink ? 1 : 2, '#f7eee5');
+        block(7, 4 + headBob, 1, blink ? 1 : 2, '#f7eee5');
+        if (!blink) {
+            block(4, 4 + headBob, 1, 1, '#211a20');
+            block(7, 4 + headBob, 1, 1, '#211a20');
+        }
+        if (expression === 'worried') {
+            block(3, 3 + headBob, 2, 1, '#30252a');
+            block(7, 3 + headBob, 2, 1, '#30252a');
+            block(5, 6 + headBob, 2, 1, '#7a3637');
+        } else if (expression === 'happy') {
+            block(3, 3 + headBob, 2, 1, '#30252a');
+            block(7, 3 + headBob, 2, 1, '#30252a');
+            block(5, 6 + headBob, 2, 1, '#7a3637');
+            block(5, 6 + headBob, 1, 1, '#f4d7c4');
+        } else if (speaking && Math.sin(time * 9) > 0.2) {
+            block(5, 6 + headBob, 2, 2, '#542b35');
+            block(5, 6 + headBob, 2, 1, '#f4d7c4');
+        } else {
+            block(5, 6 + headBob, 2, 1, '#8f4f4a');
+        }
+    }
+
+    function drawQuestionScene(canvas, sceneKey, time = tempoAnimacao) {
+        if (!canvas) return;
+        const context = canvas.getContext('2d');
+        drawOfficeRoom(context, sceneKey);
+        if (sceneKey !== 'recepcao') {
+            drawPixelCharacter(context, 690, 354, '#73529a', 'neutral', time, 1.25, false, true);
+            drawPixelCharacter(context, 790, 368, '#416d76', 'happy', time + 0.4, 1.25);
+        }
+    }
+
+    function drawLobby(canvas) {
+        if (!canvas) return;
+        const context = canvas.getContext('2d');
+        drawOfficeRoom(context, 'recepcao');
+
+        personagensLobby.forEach(personagem => {
+            if (!personagem.ativo) return;
+            drawPixelCharacter(
+                context,
+                personagem.x - 35,
+                personagem.y,
+                personagem.cor,
+                personagem.id === 'ana' ? 'neutral' : 'happy',
+                tempoAnimacao + personagem.x / 300,
+                Math.max(0.8, personagem.y / 350),
+                personagem.id !== 'ana' && faseJogo === 'aproximando',
+                personagem.id === 'ana'
+            );
+            context.font = 'bold 15px ui-rounded, sans-serif';
+            context.textAlign = 'center';
+            context.fillStyle = 'rgba(15, 12, 19, 0.82)';
+            context.fillRect(personagem.x - 46, personagem.y - 27, 92, 22);
+            context.fillStyle = '#f2eafb';
+            context.fillText(personagem.nome, personagem.x, personagem.y - 11);
+        });
+
+        const playerScale = Math.max(0.82, jogadorLobby.y / 350);
+        drawPixelCharacter(
+            context,
+            jogadorLobby.x - 35,
+            jogadorLobby.y,
+            '#416d76',
+            faseJogo === 'conversa' ? 'happy' : 'neutral',
+            tempoAnimacao,
+            playerScale,
+            movimentoJogador || faseJogo === 'aproximando'
+        );
+        context.font = 'bold 15px ui-rounded, sans-serif';
+        context.textAlign = 'center';
+        context.fillStyle = 'rgba(15, 12, 19, 0.82)';
+        context.fillRect(jogadorLobby.x - 43, jogadorLobby.y - 27, 86, 22);
+        context.fillStyle = '#f2eafb';
+        context.fillText(nomeJogador, jogadorLobby.x, jogadorLobby.y - 11);
+    }
+
+    function distanciaJogador(personagem) {
+        return Math.hypot(jogadorLobby.x - personagem.x, jogadorLobby.y - personagem.y);
+    }
+
+    function atualizarInteracoesLobby() {
+        const podeConversar = faseJogo === 'lobby';
+        personagensLobby.forEach(personagem => {
+            const botao = document.querySelector(`[data-interagir="${personagem.id}"]`);
+            if (botao) {
+                botao.disabled = !podeConversar || !personagem.ativo || distanciaJogador(personagem) > 125;
+            }
+        });
+
+        const iniciar = document.getElementById('lobby-start');
+        if (iniciar) iniciar.hidden = faseJogo !== 'conversa';
+        const hint = document.getElementById('lobby-hint');
+        if (hint) {
+            hint.innerText = faseJogo === 'lobby'
+                ? 'Aproxime-se de alguém para conversar. Use WASD ou as setas.'
+                : faseJogo === 'aproximando'
+                    ? 'Ana chamou você para a entrevista...'
+                    : 'A entrevista está pronta para começar.';
+        }
+    }
+
+    function conversarCom(personagemId) {
+        if (faseJogo !== 'lobby') return;
+        const personagem = personagensLobby.find(item => item.id === personagemId && item.ativo);
+        if (!personagem || distanciaJogador(personagem) > 125) return;
+
+        if (personagemId === 'ana') {
+            faseJogo = 'aproximando';
+            dialogoLobby = 'Ana: Boa tarde! Estávamos esperando você. Pode vir comigo, vamos começar a entrevista.';
+        } else {
+            const fala = personagemId === 'marina'
+                ? 'Marina: Boa tarde! Sou a Marina, cuido da recepção. A Ana está na sala ao lado.'
+                : 'Rafael: Boa tarde! Sou o Rafael, também estou aguardando. Boa sorte na entrevista!';
+            dialogoLobby = fala;
+        }
+
+        const dialogo = document.getElementById('lobby-dialog');
+        if (dialogo) dialogo.innerText = dialogoLobby;
+        atualizarInteracoesLobby();
+    }
+
+    function interagirMaisProximo() {
+        const maisProximo = personagensLobby
+            .filter(personagem => personagem.ativo)
+            .sort((a, b) => distanciaJogador(a) - distanciaJogador(b))[0];
+        if (maisProximo && distanciaJogador(maisProximo) <= 125) conversarCom(maisProximo.id);
+    }
+
+    function atualizarLobbyFrame(timestamp) {
+        if (faseJogo !== 'lobby' && faseJogo !== 'aproximando' && faseJogo !== 'conversa') {
+            lobbyAnimation = null;
+            return;
+        }
+
+        const delta = Math.min(timestamp - (lastLobbyFrame || timestamp), 32);
+        lastLobbyFrame = timestamp;
+
+        if (faseJogo === 'lobby') {
+            const horizontal = Number(teclaMovimento.has('d') || teclaMovimento.has('arrowright')) - Number(teclaMovimento.has('a') || teclaMovimento.has('arrowleft'));
+            const vertical = Number(teclaMovimento.has('s') || teclaMovimento.has('arrowdown')) - Number(teclaMovimento.has('w') || teclaMovimento.has('arrowup'));
+            const magnitude = Math.hypot(horizontal, vertical) || 1;
+            if (horizontal || vertical) {
+                jogadorLobby.x = Math.max(55, Math.min(905, jogadorLobby.x + horizontal / magnitude * delta * 0.24));
+                jogadorLobby.y = Math.max(287, Math.min(412, jogadorLobby.y + vertical / magnitude * delta * 0.18));
+                framePersonagem += 1;
+            }
+        } else if (faseJogo === 'aproximando') {
+            jogadorLobby.x = Math.min(655, jogadorLobby.x + delta * 0.12);
+            jogadorLobby.y += (318 - jogadorLobby.y) * Math.min(1, delta * 0.004);
+            personagensLobby.filter(personagem => personagem.id !== 'ana' && personagem.ativo).forEach(personagem => {
+                personagem.x -= delta * 0.22;
+                if (personagem.x < -100) personagem.ativo = false;
+            });
+            if (jogadorLobby.x >= 650) {
+                faseJogo = 'conversa';
+                dialogoLobby = 'Você: Boa tarde, Ana. Obrigado por me receber.\nAna: Boa tarde! Fique à vontade. Vamos conversar.';
+                const dialogo = document.getElementById('lobby-dialog');
+                if (dialogo) dialogo.innerText = dialogoLobby;
+                atualizarInteracoesLobby();
+            }
+            framePersonagem += 1;
+        }
+
+        const canvas = document.getElementById('lobby-canvas');
+        drawLobby(canvas);
+        atualizarInteracoesLobby();
+        lobbyAnimation = requestAnimationFrame(atualizarLobbyFrame);
+    }
+
+    function renderLobby() {
+        pararTemporizador();
+        document.getElementById('timer-box').style.display = 'none';
+        document.getElementById('etapa-texto').innerText = 'Recepção';
+        const conteudo = document.getElementById('conteudo-jogo');
+        conteudo.innerHTML = `
+            <section class="lobby-panel" aria-label="Recepção da empresa">
+                <div class="lobby-heading">
+                    <strong>TECHINNOVATE • RECEPÇÃO</strong>
+                    <span id="lobby-hint">Aproxime-se de alguém para conversar. Use WASD ou as setas.</span>
+                </div>
+                <div class="lobby-canvas-wrap">
+                    <canvas id="lobby-canvas" width="960" height="540" aria-label="Recepção interativa em pixel art"></canvas>
+                </div>
+                <div id="lobby-dialog" class="lobby-dialog" aria-live="polite">${dialogoLobby}</div>
+                <div class="lobby-actions">
+                    <button class="btn lobby-action" data-interagir="marina" disabled>Interagir: Marina</button>
+                    <button class="btn lobby-action" data-interagir="rafael" disabled>Interagir: Rafael</button>
+                    <button class="btn lobby-action primary" data-interagir="ana" disabled>Interagir: Ana</button>
+                    <button id="lobby-start" class="btn lobby-action primary" hidden>Começar entrevista</button>
+                </div>
+                <div class="lobby-controls">
+                    <span>W A S D / setas para andar • E para interagir com quem estiver perto</span>
+                    <div class="move-pad" aria-label="Controles de movimento">
+                        <button class="move-key" data-dir="up" aria-label="Mover para cima">↑</button>
+                        <button class="move-key" data-dir="left" aria-label="Mover para esquerda">←</button>
+                        <button class="move-key" data-dir="down" aria-label="Mover para baixo">↓</button>
+                        <button class="move-key" data-dir="right" aria-label="Mover para direita">→</button>
+                    </div>
+                </div>
+            </section>
+        `;
+
+        document.querySelectorAll('[data-interagir]').forEach(botao => {
+            botao.addEventListener('click', () => conversarCom(botao.dataset.interagir));
+        });
+        document.getElementById('lobby-start').addEventListener('click', iniciarEntrevista);
+        document.querySelectorAll('.move-key').forEach(botao => {
+            const direcoes = { up: 'w', left: 'a', down: 's', right: 'd' };
+            const pressionar = event => {
+                event.preventDefault();
+                teclaMovimento.add(direcoes[botao.dataset.dir]);
+            };
+            const soltar = () => teclaMovimento.delete(direcoes[botao.dataset.dir]);
+            botao.addEventListener('pointerdown', pressionar);
+            botao.addEventListener('pointerup', soltar);
+            botao.addEventListener('pointercancel', soltar);
+            botao.addEventListener('pointerleave', soltar);
+        });
+
+        drawLobby(document.getElementById('lobby-canvas'));
+        atualizarInteracoesLobby();
+        if (lobbyAnimation) cancelAnimationFrame(lobbyAnimation);
+        lastLobbyFrame = 0;
+        lobbyAnimation = requestAnimationFrame(atualizarLobbyFrame);
+    }
+
+    function iniciarEntrevista() {
+        faseJogo = 'entrevista';
+        if (lobbyAnimation) cancelAnimationFrame(lobbyAnimation);
+        document.getElementById('timer-box').style.display = 'flex';
+        carregarCena();
+    }
+
+    function renderCenaVisual(indice = cenaAtual) {
+        const visual = cenariosVisuais[indice] || {
+            ...cenariosVisuais[0],
+            local: 'Simulação de entrevista',
+            fala: 'Respire fundo. Vamos começar: mostre o melhor da sua experiência.',
+            legenda: 'Uma pergunta de cada vez. Você está no controle.'
+        };
+
+        return `
+            <section class="scene-stage" data-cenario="${visual.cenario}" aria-label="${visual.local}">
+                <canvas class="scene-art" width="960" height="540" aria-hidden="true"></canvas>
+                <div class="scene-copy">
+                    <p class="scene-kicker">${visual.local}</p>
+                    <p class="speech-bubble">“${visual.fala}”</p>
+                    <p class="scene-caption">${visual.legenda}</p>
+                </div>
+            </section>
+        `;
+    }
 
     function embaralharArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -696,7 +1720,7 @@
             <div class="start-panel">
                 <div class="card hero-card">
                     <h3>Escolha o perfil da sua simulação</h3>
-                    <p>Este questionário tem 15 perguntas: 12 objetivas e 3 descritivas, com foco em raciocínio, comunicação, gestão e ética profissional.</p>
+                    <p>Explore a recepção, converse com a equipe e escolha como quer fazer a entrevista.</p>
                 </div>
 
                 <div class="perfil-grid">
@@ -708,7 +1732,18 @@
                     `).join('')}
                 </div>
 
-                <button id="btn-iniciar" class="cta-btn">Iniciar questionário</button>
+                <div class="modo-grid" role="group" aria-label="Formato da entrevista">
+                    <button class="modo-card ${modoSelecionado === 'completo' ? 'selecionado' : ''}" data-modo="completo" aria-pressed="${modoSelecionado === 'completo'}">
+                        <strong>Simulado completo</strong>
+                        <span>12 perguntas rápidas + 2 respostas curtas</span>
+                    </button>
+                    <button class="modo-card ${modoSelecionado === 'rapidas' ? 'selecionado' : ''}" data-modo="rapidas" aria-pressed="${modoSelecionado === 'rapidas'}">
+                        <strong>Só perguntas rápidas</strong>
+                        <span>12 perguntas objetivas, sem texto longo</span>
+                    </button>
+                </div>
+
+                <button id="btn-iniciar" class="cta-btn">Entrar na recepção</button>
             </div>
         `;
 
@@ -719,12 +1754,22 @@
             });
         });
 
+        document.querySelectorAll('.modo-card').forEach(botao => {
+            botao.addEventListener('click', () => {
+                modoSelecionado = botao.dataset.modo;
+                renderInicio();
+            });
+        });
+
         document.getElementById('btn-iniciar').addEventListener('click', () => {
             taxaAdmissao = 50 + perfis[perfilSelecionado].bonus;
             historico = [];
             cenaAtual = 0;
+            cenas = perguntas.filter(pergunta => modoSelecionado === 'completo' || pergunta.tipo === 'objetiva');
+            embaralharTodasOpcoes();
             atualizarBarra();
-            carregarCena();
+            faseJogo = 'lobby';
+            renderLobby();
         });
     }
 
@@ -800,9 +1845,11 @@
 
         const cena = cenas[cenaAtual];
         const conteudo = document.getElementById('conteudo-jogo');
+        const visual = renderCenaVisual();
 
         if (cena.tipo === 'objetiva') {
             conteudo.innerHTML = `
+            ${visual}
                 <div class="card">
                     <div class="card-header">
                         <h3>${cena.titulo}</h3>
@@ -827,6 +1874,7 @@
             });
         } else {
             conteudo.innerHTML = `
+                ${visual}
                 <div class="card">
                     <div class="card-header">
                         <h3>${cena.titulo}</h3>
@@ -837,7 +1885,8 @@
 
                 <div id="feedback-box" class="feedback"></div>
 
-                <textarea id="resposta-descritiva" rows="7" style="width:100%; border:1px solid #cbd5e1; border-radius:12px; padding:14px; font-size:14px; resize:vertical; margin-bottom:12px;" placeholder="Digite sua resposta detalhada aqui..."></textarea>
+                <label class="resposta-label" for="resposta-descritiva">Sua resposta (até 3 linhas)</label>
+                <textarea id="resposta-descritiva" rows="3" maxlength="360" style="width:100%; border:1px solid #cbd5e1; border-radius:12px; padding:14px; font-size:14px; resize:vertical; margin-bottom:12px;" placeholder="Escreva de forma direta, em poucas linhas..."></textarea>
                 <button id="btn-responder" class="cta-btn">Enviar resposta</button>
             `;
 
@@ -854,6 +1903,10 @@
                 processarRespostaDescritiva(avaliacao, texto);
             });
         }
+
+        document.querySelectorAll('.scene-stage').forEach(stage => {
+            drawQuestionScene(stage.querySelector('.scene-art'), stage.dataset.cenario);
+        });
 
         document.getElementById('etapa-texto').innerText = `Etapa: ${cenaAtual + 1} de ${cenas.length}`;
         iniciarTemporizador();
@@ -1004,6 +2057,25 @@
     function reiniciarJogo() {
         location.reload();
     }
+
+    window.addEventListener('keydown', event => {
+        if (faseJogo !== 'lobby') return;
+        const tecla = event.key.toLowerCase();
+        if (['w', 'a', 's', 'd', 'arrowup', 'arrowleft', 'arrowdown', 'arrowright', 'e'].includes(tecla)) {
+            event.preventDefault();
+            if (tecla === 'e' && !event.repeat) {
+                interagirMaisProximo();
+            } else {
+                teclaMovimento.add(tecla);
+            }
+        }
+    });
+
+    window.addEventListener('keyup', event => {
+        teclaMovimento.delete(event.key.toLowerCase());
+    });
+
+    window.addEventListener('blur', () => teclaMovimento.clear());
 
     embaralharTodasOpcoes();
     atualizarBarra();

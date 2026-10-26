@@ -1,6 +1,7 @@
 import sys
 import time
 
+
 def texto_pausado(texto, atraso=0.02):
     """
     Função utilitária para exibir o texto aos poucos no terminal,
@@ -12,6 +13,7 @@ def texto_pausado(texto, atraso=0.02):
         time.sleep(atraso)
     print()
 
+
 def obter_escolha(opcoes_validas):
     """
     Garante que o jogador digite uma opção válida (ex: 1, 2 ou 3).
@@ -22,6 +24,7 @@ def obter_escolha(opcoes_validas):
             return escolha
         print("Opção inválida! Digite o número correspondente à sua decisão.")
 
+
 def iniciar_jogo():
     # --- ESTADO DO JOGADOR ---
     # Você pode adicionar novas variáveis aqui para medir outras métricas,
@@ -31,14 +34,14 @@ def iniciar_jogo():
     print("=" * 60)
     print("      SIMULADOR DE ENTREVISTA DE EMPREGO: O DIA D")
     print("=" * 60)
-    
+
     nome = input("\nDigite o nome do seu personagem: ").strip()
     if not nome:
         nome = "Candidato"
 
     texto_pausado(f"\nOlá, {nome}. Você está no saguão da 'TechInnovate Solutions'.")
     texto_pausado("Esta é a entrevista para a vaga dos seus sonhos. O entrevistador te chama.")
-    
+
     # -------------------------------------------------------------------------
     # DECISÃO 1: A Chegada e Apresentação
     # -------------------------------------------------------------------------
@@ -56,7 +59,10 @@ def iniciar_jogo():
         texto_pausado("\n[Consequência]: O Sr. Silva sorri e retribui o aperto de mão com entusiasmo.")
         pontos_desempenho += 2
     elif escolha1 == '2':
-        texto_pausado("\n[Consequência]: O Sr. Silva levanta uma sobrancelha, parecendo notar a falta de etiqueta.")
+        texto_pausado(
+            "\n[Consequência]: O Sr. Silva levanta uma sobrancelha, "
+            "parecendo notar a falta de etiqueta."
+        )
         pontos_desempenho -= 1
     elif escolha1 == '3':
         texto_pausado("\n[Consequência]: O Sr. Silva dá uma risadinha sem graça, mas o clima fica um pouco estranho.")
@@ -75,13 +81,22 @@ def iniciar_jogo():
     escolha2 = obter_escolha(['1', '2', '3'])
 
     if escolha2 == '1':
-        texto_pausado("\n[Consequência]: O entrevistador suspira. Ele já ouviu essa resposta clichê centenas de vezes.")
+        texto_pausado(
+            "\n[Consequência]: O entrevistador suspira. Ele já ouviu "
+            "essa resposta clichê centenas de vezes."
+        )
         pontos_desempenho += 0
     elif escolha2 == '2':
-        texto_pausado("\n[Consequência]: O Sr. Silva anota algo no bloco e acena com a cabeça, impressionado com a autoconsciência.")
+        texto_pausado(
+            "\n[Consequência]: O Sr. Silva anota algo no bloco e acena "
+            "com a cabeça, impressionado com a autoconsciência."
+        )
         pontos_desempenho += 3
     elif escolha2 == '3':
-        texto_pausado("\n[Consequência]: O Sr. Silva fica em silêncio por três segundos. A sinceridade excessiva assustou a empresa.")
+        texto_pausado(
+            "\n[Consequência]: O Sr. Silva fica em silêncio por três "
+            "segundos. A sinceridade excessiva assustou a empresa."
+        )
         pontos_desempenho -= 2
 
     # -------------------------------------------------------------------------
@@ -113,10 +128,16 @@ def iniciar_jogo():
     escolha3 = obter_escolha(['1', '2', '3'])
 
     if escolha3 == '1':
-        texto_pausado("\n[Consequência]: Os olhos do Sr. Silva brilham. Ele percebe que você está focado em resultados.")
+        texto_pausado(
+            "\n[Consequência]: Os olhos do Sr. Silva brilham. Ele percebe "
+            "que você está focado em resultados."
+        )
         pontos_desempenho += 3
     elif escolha3 == '2':
-        texto_pausado("\n[Consequência]: O entrevistador responde a dúvida, mas parece achar que seu foco inicial está nos benefícios, não no trabalho.")
+        texto_pausado(
+            "\n[Consequência]: O entrevistador responde a dúvida, mas "
+            "parece achar que seu foco inicial está nos benefícios, não no trabalho."
+        )
         pontos_desempenho -= 1
     elif escolha3 == '3':
         texto_pausado("\n[Consequência]: O Sr. Silva apenas fecha a pasta. Pareceu uma oportunidade perdida de demonstrar interesse.")
@@ -133,13 +154,22 @@ def iniciar_jogo():
     # Você pode ajustar os pontos necessários para cada final
     if pontos_desempenho >= 6:
         texto_pausado("\n>>> RESULTADO: CONTRATADO! <<<")
-        texto_pausado(f"Parabéns, {nome}! A empresa adorou sua postura, sinceridade e interesse. A proposta formal de emprego está no seu e-mail.")
+        texto_pausado(
+            f"Parabéns, {nome}! A empresa adorou sua postura, sinceridade e interesse. "
+            "A proposta formal de emprego está no seu e-mail."
+        )
     elif 2 <= pontos_desempenho < 6:
         texto_pausado("\n>>> RESULTADO: LISTA DE ESPERA / BANCO DE TALENTOS <<<")
-        texto_pausado(f"Olá, {nome}. Seu desempenho foi bom, mas outro candidato tinha um perfil ligeiramente mais adequado. Guardamos seu currículo para futuras vagas.")
+        texto_pausado(
+            f"Olá, {nome}. Seu desempenho foi bom, mas outro candidato tinha um perfil "
+            "ligeiramente mais adequado. Guardamos seu currículo para futuras vagas."
+        )
     else:
         texto_pausado("\n>>> RESULTADO: REPROVADO <<<")
-        texto_pausado(f"Olá, {nome}. Agradecemos seu tempo, mas decidimos seguir com outros candidatos que se alinham melhor à cultura da empresa.")
+        texto_pausado(
+            f"Olá, {nome}. Agradecemos seu tempo, mas decidimos seguir com outros "
+            "candidatos que se alinham melhor à cultura da empresa."
+        )
 
     print(f"\nPontuação final obtida: {pontos_desempenho} pontos.")
 
