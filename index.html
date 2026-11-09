@@ -818,7 +818,7 @@
     <h1>Simulador Executivo de Entrevista</h1>
 
     <div class="info-header">
-        <span id="etapa-texto">Etapa: 0 de 13</span>
+        <span id="etapa-texto">Etapa: 0 de 20</span>
         <div id="timer-box" class="timer-box">
             ⏱️ Tempo: <span id="tempo-restante">60</span>s
         </div>
@@ -1112,6 +1112,71 @@
             classePeso: 'peso-critico',
             texto: 'Descreva uma situação real em que uma pessoa ou área importante discordou da sua recomendação. Em até 3 linhas, explique os interesses em conflito, como você influenciou a decisão, o resultado e o que aprendeu.',
             minimoCaracteres: 90
+        },
+        {
+            id: 15,
+            tipo: 'objetiva',
+            titulo: 'English B2: handling a disagreement',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'A colleague wants to launch a new feature today, but your tests show a problem that may affect some users. How would you discuss the risk and agree on the next step?',
+            opcoes: [
+                { texto: 'I would explain the test results and possible user impact, then suggest a limited launch while we investigate and set a time to review the evidence.', impacto: 20, tipo: 'positivo', consequencia: 'You made the risk clear and suggested a controlled next step with a review point (+20%).' },
+                { texto: 'I would ask the team to delay the launch until the problem is understood, and share what information we still need.', impacto: 14, tipo: 'neutro', consequencia: 'You reduced the risk, but a full delay may not be necessary if a smaller launch can be tested safely (+14%).' },
+                { texto: 'I would allow the launch as planned and watch the results closely, then report any problems to my colleague.', impacto: 8, tipo: 'neutro', consequencia: 'Monitoring can reveal problems, but users may be affected before the team agrees on a response (+8%).' }
+            ]
+        },
+        {
+            id: 16,
+            tipo: 'objetiva',
+            titulo: 'English B2: using feedback',
+            peso: 'Médio',
+            classePeso: 'peso-medio',
+            texto: 'Your manager says your weekly reports contain useful information but are difficult to scan. What would you do before sending the next report?',
+            opcoes: [
+                { texto: 'I would ask which decisions the report should support, create a short summary with clear headings, and check whether the new format is easier to use.', impacto: 20, tipo: 'positivo', consequencia: 'You turned general feedback into a clear change and a way to check whether it works (+20%).' },
+                { texto: 'I would remove some detail and send the shorter report, then ask my manager if the change is helpful.', impacto: 14, tipo: 'neutro', consequencia: 'You acted on the feedback, but confirming what information matters could prevent removing useful details (+14%).' },
+                { texto: 'I would explain why each detail is important and keep the report in its current format for now.', impacto: 8, tipo: 'neutro', consequencia: 'The details may be valuable, but the report still needs to be easier to scan for its readers (+8%).' }
+            ]
+        },
+        {
+            id: 17,
+            tipo: 'objetiva',
+            titulo: 'English B2: setting priorities',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'Two important tasks are due on Friday, but your team has time to complete only one. One task supports a key customer; the other removes a repeated problem for many users. What would you do?',
+            opcoes: [
+                { texto: 'I would compare the impact and cost of delaying each task, check the facts with the teams involved, and agree on a priority and a review date.', impacto: 20, tipo: 'positivo', consequencia: 'You compared impact and delay costs before agreeing on a priority that can be reviewed (+20%).' },
+                { texto: 'I would ask the project manager to choose, after sharing the deadlines and expected impact of both tasks.', impacto: 14, tipo: 'neutro', consequencia: 'You shared useful context, but adding clear decision criteria could help the manager make a stronger choice (+14%).' },
+                { texto: 'I would split the available time between both tasks so that each team can make some progress.', impacto: 8, tipo: 'neutro', consequencia: 'Both teams may see progress, but splitting time could leave both tasks unfinished without reducing the main risks (+8%).' }
+            ]
+        },
+        {
+            id: 18,
+            tipo: 'objetiva',
+            titulo: 'English B2: responding to a customer',
+            peso: 'Crítico',
+            classePeso: 'peso-critico',
+            texto: 'A customer is upset because a service stopped working twice this week. Your team has not found the cause yet. What would you say and do in your first response?',
+            opcoes: [
+                { texto: 'I would recognise the impact, ask when the problem happened, explain that we are investigating, and agree on a time for the next update.', impacto: 20, tipo: 'positivo', consequencia: 'You showed that you understood the impact and set a clear expectation without guessing the cause (+20%).' },
+                { texto: 'I would connect the customer with a technician and send an update after the team has completed its investigation.', impacto: 14, tipo: 'neutro', consequencia: 'A technician can help, but the customer also needs to know when they will hear from you again (+14%).' },
+                { texto: 'I would apologise and promise that the service will be fixed by the end of the day.', impacto: 8, tipo: 'neutro', consequencia: 'An apology matters, but promising a deadline before the cause is known may create false expectations (+8%).' }
+            ]
+        },
+        {
+            id: 19,
+            tipo: 'objetiva',
+            titulo: 'English B2: working as a team',
+            peso: 'Alto',
+            classePeso: 'peso-alto',
+            texto: 'You join a project that is already behind schedule. Team members disagree about the main cause, and another department is waiting for your work. How would you help the team move forward?',
+            opcoes: [
+                { texto: 'I would listen to the team, map the work that is blocking progress, and agree on one next action with an owner and a time to check progress.', impacto: 20, tipo: 'positivo', consequencia: 'You brought different views together and made the next step clear and trackable (+20%).' },
+                { texto: 'I would ask the project lead to choose the most urgent task and tell the other department when to expect an update.', impacto: 14, tipo: 'neutro', consequencia: 'You addressed the dependency, but the team could help identify the cause and choose a realistic next step (+14%).' },
+                { texto: 'I would focus on my own tasks first and let the team solve its disagreement before I get involved.', impacto: 8, tipo: 'neutro', consequencia: 'Finishing your tasks may help, but leaving the blocker unresolved could delay the whole project further (+8%).' }
+            ]
         }
     ];
 
@@ -1130,12 +1195,18 @@
         { cenario: 'feedback', local: 'Revisão de análise', fala: 'Uma crítica pública diz que falta algo, mas não traz exemplos. Como esclarece o risco?', legenda: 'Investigue a crítica sem aceitá-la às cegas nem descartá-la.', entrevistador: 'pensativo', candidato: 'pensativo' },
         { cenario: 'processo', local: 'Entrevista comportamental', fala: 'Fale de uma decisão com dados incompletos: qual era seu papel e o que aconteceu?', legenda: 'Resultados e aprendizados precisam ser concretos.', entrevistador: 'curioso', candidato: 'pensativo' },
         { cenario: 'conversa', local: 'Entrevista comportamental', fala: 'Conte quando alguém discordou da sua recomendação e como você influenciou a decisão.', legenda: 'Demonstre influência com evidências, não apenas intenção.', entrevistador: 'preocupado', candidato: 'confiante' },
-        { cenario: 'compliance', local: 'Revisão de qualidade', fala: 'Você percebe uma tentativa de esconder um problema no relatório. O que faria?', legenda: 'Transparência protege as pessoas e o negócio.', entrevistador: 'pensativo', candidato: 'confiante' }
+        { cenario: 'compliance', local: 'Revisão de qualidade', fala: 'Você percebe uma tentativa de esconder um problema no relatório. O que faria?', legenda: 'Transparência protege as pessoas e o negócio.', entrevistador: 'pensativo', candidato: 'confiante' },
+        { cenario: 'english-conflict', local: 'Feature launch meeting', fala: 'How would you discuss a launch risk with your colleague?', legenda: 'Make the user impact clear before agreeing on the next step.' },
+        { cenario: 'english-feedback', local: 'Report review desk', fala: 'How would you use feedback to improve your next report?', legenda: 'Turn a general comment into a change you can test.' },
+        { cenario: 'english-priorities', local: 'Project planning wall', fala: 'Two tasks, one deadline: how would you choose what comes first?', legenda: 'Compare impact, delay costs and the evidence behind each task.' },
+        { cenario: 'english-customer', local: 'Customer support desk', fala: 'What would you say when the cause is not known yet?', legenda: 'Acknowledge the impact and set a reliable time for an update.' },
+        { cenario: 'english-teamwork', local: 'Team workshop', fala: 'How would you help a delayed team agree on its next move?', legenda: 'Find the blocker, name an owner and check progress together.' }
     ];
 
     let cenas = [...perguntas];
 
     const paletasCenario = {
+        cargo: ['#29434a', '#b9cec4', '#4b6058'],
         recepcao: ['#28383c', '#a8c1ba', '#4a5d55'],
         apresentacao: ['#302d42', '#a9aec6', '#51485d'],
         equipe: ['#34404a', '#b6c4c1', '#4b5457'],
@@ -1235,6 +1306,7 @@
         }
 
         const sceneProps = {
+            cargo: { desk: 420, accent: '#4f8d82' },
             recepcao: { desk: 670, accent: '#75559b' },
             apresentacao: { desk: 550, accent: '#6a6693' },
             equipe: { desk: 500, accent: '#597d72' },
@@ -1342,11 +1414,255 @@
             context.fillRect(454, 165, 21, 68);
             context.fillStyle = '#625b55';
             context.fillRect(378, 233, 184, 4);
+        } else if (sceneKey === 'cargo') {
+            context.fillStyle = '#202b30';
+            context.fillRect(350, 118, 250, 138);
+            context.fillStyle = '#b7c9bd';
+            context.fillRect(359, 127, 232, 120);
+            context.fillStyle = '#467c73';
+            context.fillRect(377, 205, 30, 30);
+            context.fillRect(416, 183, 30, 52);
+            context.fillRect(455, 157, 30, 78);
+            context.fillStyle = '#8d6e52';
+            context.fillRect(505, 214, 64, 21);
+            context.fillStyle = '#4c4a43';
+            context.fillRect(377, 239, 192, 4);
         }
 
         const vignette = context.createRadialGradient(480, 260, 100, 480, 260, 620);
         vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
         vignette.addColorStop(1, 'rgba(0, 0, 0, 0.38)');
+        context.fillStyle = vignette;
+        context.fillRect(0, 0, 960, 540);
+    }
+
+    function drawEnglishScenario(context, sceneKey) {
+        const colors = {
+            'english-conflict': ['#38525a', '#b9c9c4', '#53635f'],
+            'english-feedback': ['#454b50', '#c4c9c4', '#5d625f'],
+            'english-priorities': ['#405347', '#c6c8aa', '#596254'],
+            'english-customer': ['#574a43', '#cbbda9', '#66564b'],
+            'english-teamwork': ['#394c4b', '#c3c4a9', '#58645b']
+        }[sceneKey];
+        const [wallColor, boardColor, floorColor] = colors;
+        const wall = context.createLinearGradient(0, 0, 0, 390);
+        wall.addColorStop(0, '#24292d');
+        wall.addColorStop(0.2, wallColor);
+        wall.addColorStop(1, '#373638');
+        context.fillStyle = wall;
+        context.fillRect(0, 0, 960, 540);
+
+        const floor = context.createLinearGradient(0, 340, 0, 540);
+        floor.addColorStop(0, floorColor);
+        floor.addColorStop(1, '#242528');
+        context.fillStyle = floor;
+        context.fillRect(0, 340, 960, 200);
+        context.strokeStyle = 'rgba(231, 220, 193, 0.13)';
+        context.lineWidth = 2;
+        for (let x = 70; x < 960; x += 150) {
+            context.beginPath();
+            context.moveTo(x, 340);
+            context.lineTo(x - 100, 540);
+            context.stroke();
+        }
+
+        const panel = (x, y, width, height, color, border = '#24292d') => {
+            context.fillStyle = border;
+            context.fillRect(x - 7, y - 7, width + 14, height + 14);
+            context.fillStyle = color;
+            context.fillRect(x, y, width, height);
+        };
+        const label = (text, x, y, color = '#283034', size = 15) => {
+            context.fillStyle = color;
+            context.font = `800 ${size}px ui-rounded, sans-serif`;
+            context.textAlign = 'left';
+            context.fillText(text, x, y);
+        };
+
+        if (sceneKey === 'english-conflict') {
+            panel(60, 82, 178, 200, '#647f80');
+            context.fillStyle = 'rgba(225, 238, 222, 0.7)';
+            context.fillRect(71, 94, 72, 174);
+            context.fillStyle = 'rgba(40, 55, 61, 0.72)';
+            context.fillRect(151, 94, 75, 174);
+            context.fillRect(145, 88, 7, 188);
+            panel(278, 75, 335, 218, boardColor);
+            label('LAUNCH OPTIONS', 300, 103);
+            context.fillStyle = '#527e72';
+            context.fillRect(300, 121, 135, 23);
+            context.fillStyle = '#986d55';
+            context.fillRect(455, 121, 135, 23);
+            label('LIMITED', 309, 138, '#f4f1e8', 12);
+            label('FULL', 473, 138, '#f4f1e8', 12);
+            context.fillStyle = '#627b72';
+            context.fillRect(311, 171, 37, 82);
+            context.fillRect(362, 191, 37, 62);
+            context.fillStyle = '#9b795a';
+            context.fillRect(466, 184, 37, 69);
+            context.fillRect(517, 160, 37, 93);
+            context.strokeStyle = '#717b72';
+            context.lineWidth = 4;
+            context.beginPath();
+            context.moveTo(348, 168);
+            context.lineTo(458, 159);
+            context.stroke();
+            context.fillStyle = '#303638';
+            context.beginPath();
+            context.moveTo(140, 324);
+            context.lineTo(664, 324);
+            context.lineTo(721, 378);
+            context.lineTo(86, 378);
+            context.closePath();
+            context.fill();
+            context.fillStyle = '#776954';
+            context.fillRect(100, 378, 15, 96);
+            context.fillRect(657, 378, 15, 96);
+        } else if (sceneKey === 'english-feedback') {
+            panel(74, 73, 520, 245, '#252d30');
+            context.fillStyle = '#d1d0c3';
+            context.fillRect(87, 86, 494, 218);
+            context.fillStyle = '#536b65';
+            context.fillRect(87, 86, 494, 34);
+            label('WEEKLY REPORT', 105, 109, '#f4f1e8', 14);
+            context.fillStyle = '#81847a';
+            context.fillRect(106, 143, 180, 7);
+            context.fillRect(106, 158, 238, 5);
+            context.fillRect(106, 171, 203, 5);
+            context.fillStyle = '#5d8a7b';
+            context.fillRect(108, 197, 34, 86);
+            context.fillRect(156, 222, 34, 61);
+            context.fillRect(204, 184, 34, 99);
+            context.fillStyle = '#ba765c';
+            context.fillRect(384, 139, 173, 86);
+            context.fillStyle = '#f1ded1';
+            context.fillRect(396, 151, 149, 62);
+            context.fillStyle = '#a64c43';
+            context.beginPath();
+            context.moveTo(419, 199);
+            context.lineTo(451, 166);
+            context.lineTo(482, 183);
+            context.lineTo(520, 157);
+            context.strokeStyle = '#a64c43';
+            context.lineWidth = 5;
+            context.stroke();
+            context.fillStyle = '#bf6959';
+            context.beginPath();
+            context.arc(539, 140, 12, 0, Math.PI * 2);
+            context.fill();
+            panel(100, 352, 490, 28, '#a78e70');
+            context.fillStyle = '#d7c7a6';
+            context.fillRect(125, 327, 90, 18);
+            context.fillStyle = '#f0e9d8';
+            context.fillRect(130, 316, 82, 14);
+        } else if (sceneKey === 'english-priorities') {
+            panel(64, 69, 552, 250, '#39423e');
+            const columns = [
+                { x: 80, title: 'TODAY', color: '#b36b52', cards: ['Customer', 'Risk check'] },
+                { x: 261, title: 'NEXT', color: '#b59a58', cards: ['Review data', 'Call team'] },
+                { x: 442, title: 'LATER', color: '#62877b', cards: ['Improve flow', 'Write notes'] }
+            ];
+            columns.forEach(column => {
+                context.fillStyle = '#d2d0c3';
+                context.fillRect(column.x, 90, 158, 211);
+                context.fillStyle = column.color;
+                context.fillRect(column.x, 90, 158, 30);
+                label(column.title, column.x + 12, 110, '#f6f1e5', 13);
+                column.cards.forEach((card, index) => {
+                    const y = 137 + index * 72;
+                    context.fillStyle = index ? '#bcb59f' : '#ece2be';
+                    context.fillRect(column.x + 12, y, 134, 54);
+                    context.fillStyle = '#4d514b';
+                    context.fillRect(column.x + 22, y + 13, 114, 4);
+                    context.fillRect(column.x + 22, y + 25, 82, 4);
+                    label(card, column.x + 22, y + 46, '#39423e', 10);
+                });
+            });
+            context.fillStyle = '#292c2d';
+            context.fillRect(104, 347, 510, 22);
+            context.fillRect(124, 369, 13, 93);
+            context.fillRect(576, 369, 13, 93);
+            context.fillStyle = '#bdab82';
+            context.fillRect(174, 326, 115, 17);
+        } else if (sceneKey === 'english-customer') {
+            panel(55, 75, 480, 242, '#272e31');
+            context.fillStyle = '#bbc9bf';
+            context.fillRect(67, 87, 456, 218);
+            context.fillStyle = '#507873';
+            context.fillRect(67, 87, 456, 34);
+            label('CUSTOMER SUPPORT', 85, 110, '#f4f1e8', 14);
+            context.fillStyle = '#ecede2';
+            context.fillRect(88, 140, 224, 52);
+            context.fillStyle = '#4c6562';
+            context.fillRect(105, 154, 165, 5);
+            context.fillRect(105, 168, 126, 5);
+            context.fillStyle = '#d2e0d1';
+            context.fillRect(323, 204, 178, 49);
+            context.fillStyle = '#55746d';
+            context.fillRect(340, 218, 132, 5);
+            context.fillRect(340, 232, 98, 5);
+            context.fillStyle = '#578878';
+            context.beginPath();
+            context.arc(466, 158, 12, 0, Math.PI * 2);
+            context.fill();
+            context.strokeStyle = '#578878';
+            context.lineWidth = 6;
+            context.beginPath();
+            context.arc(466, 158, 22, Math.PI, 0);
+            context.stroke();
+            context.fillStyle = '#373332';
+            context.fillRect(81, 346, 520, 25);
+            context.fillStyle = '#826c59';
+            context.fillRect(101, 371, 13, 95);
+            context.fillRect(568, 371, 13, 95);
+            context.fillStyle = '#c9bea9';
+            context.fillRect(143, 330, 210, 14);
+        } else if (sceneKey === 'english-teamwork') {
+            panel(62, 66, 535, 250, '#705d48');
+            context.fillStyle = '#c4b99e';
+            context.fillRect(74, 78, 511, 226);
+            label('PROJECT WORKSHOP', 92, 106, '#3a4039', 14);
+            const notes = [
+                [100, 130, '#d9a968'], [180, 145, '#77998a'], [268, 124, '#d17b60'],
+                [364, 148, '#d9a968'], [463, 126, '#77998a'], [145, 219, '#77998a'],
+                [255, 208, '#d9a968'], [375, 221, '#d17b60'], [477, 211, '#d9a968']
+            ];
+            context.strokeStyle = 'rgba(67, 71, 62, 0.6)';
+            context.lineWidth = 3;
+            [[129, 151, 207, 165], [207, 165, 295, 144], [295, 144, 391, 166], [391, 166, 490, 146], [160, 240, 282, 229], [282, 229, 402, 241]].forEach(([x1, y1, x2, y2]) => {
+                context.beginPath();
+                context.moveTo(x1, y1);
+                context.lineTo(x2, y2);
+                context.stroke();
+            });
+            notes.forEach(([x, y, color]) => {
+                context.fillStyle = color;
+                context.fillRect(x, y, 54, 43);
+                context.fillStyle = 'rgba(45, 47, 42, 0.52)';
+                context.fillRect(x + 8, y + 12, 37, 3);
+                context.fillRect(x + 8, y + 23, 28, 3);
+            });
+            context.fillStyle = '#343538';
+            context.beginPath();
+            context.moveTo(85, 343);
+            context.lineTo(600, 343);
+            context.lineTo(646, 383);
+            context.lineTo(53, 383);
+            context.closePath();
+            context.fill();
+            context.fillStyle = '#d8d1c0';
+            context.fillRect(171, 321, 220, 16);
+            context.fillStyle = '#677d70';
+            context.fillRect(205, 325, 30, 8);
+            context.fillRect(247, 325, 30, 8);
+            context.fillRect(289, 325, 30, 8);
+            context.fillStyle = '#554e45';
+            context.fillRect(98, 383, 14, 86);
+            context.fillRect(585, 383, 14, 86);
+        }
+
+        const vignette = context.createRadialGradient(450, 245, 120, 450, 245, 650);
+        vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        vignette.addColorStop(1, 'rgba(0, 0, 0, 0.28)');
         context.fillStyle = vignette;
         context.fillRect(0, 0, 960, 540);
     }
@@ -1360,13 +1676,21 @@
         time = 0,
         scale = 1,
         walking = false,
-        speaking = false
+        speaking = false,
+        gesture = 'none'
     ) {
         const unit = 7 * scale;
         const walkPhase = time * 11;
         const stride = walking ? Math.sin(walkPhase) : Math.sin(time * 2.2) * 0.08;
-        const bounce = walking ? Math.abs(Math.sin(walkPhase)) * 1.5 : Math.sin(time * 2.4) * 0.55;
+        const bounce = walking ? Math.abs(Math.sin(walkPhase)) * 1.5 : Math.sin(time * (speaking ? 8 : 2.4)) * (speaking ? 1.8 : 0.55);
         const blink = Math.sin(time * 1.7 + 0.8) > 0.994;
+        const gesturePulse = Math.max(0, Math.sin(time * 16));
+        const armRaised = gesture === 'point' ? 5 : gesture === 'emphasis' ? Math.round(gesturePulse * 5) : gesture === 'open' ? Math.round(Math.max(0, Math.sin(time * 11)) * 2) : 0;
+        const leftArmRaised = gesture === 'open'
+            ? Math.round(Math.max(0, Math.cos(time * 11)) * 2)
+            : gesture === 'emphasis' ? Math.round(Math.max(0, Math.sin(time * 16 + 1)) * 3) : 0;
+        const armReach = gesture === 'open' ? 2 : 0;
+        const handWave = gesture === 'none' ? 0 : Math.round(Math.sin(time * 15));
         const block = (column, row, width, height, color) => {
             context.fillStyle = color;
             context.fillRect(
@@ -1397,14 +1721,14 @@
         block(1, 17 + leftLegY, 3, 1, '#15141a');
         block(6, 17 + rightLegY, 3, 1, '#15141a');
 
-        const bodyBob = Math.round(bounce * 0.35);
+        const bodyBob = Math.round(bounce * (speaking ? 0.8 : 0.35));
         const armSwing = walking ? Math.round(stride) : 0;
         block(1, 7 + bodyBob, 8, 6, '#17141c');
         block(2, 6 + bodyBob, 7, 7, coat);
-        block(1, 7 + bodyBob + armSwing, 2, 4, coat);
-        block(0, 10 + bodyBob + armSwing, 2, 2, '#d59b76');
-        block(8, 7 + bodyBob - armSwing, 2, 4, coat);
-        block(8, 10 + bodyBob - armSwing, 2, 2, '#d59b76');
+        block(1 - armReach, 7 + bodyBob + armSwing - leftArmRaised, 2, 4 + leftArmRaised, coat);
+        block(-armReach, 10 + bodyBob + armSwing - leftArmRaised, 2, 2, '#d59b76');
+        block(8, 7 + bodyBob - armSwing - armRaised, 2, 4 + armRaised, coat);
+        block(8 + armReach + handWave, 10 + bodyBob - armSwing - armRaised, 2, 2, '#d59b76');
         block(2, 7 + bodyBob, 1, 5, 'rgba(255, 255, 255, 0.2)');
         block(8, 7 + bodyBob, 1, 5, 'rgba(10, 8, 14, 0.24)');
         block(4, 7 + bodyBob, 2, 6, '#f0e9e0');
@@ -1415,7 +1739,7 @@
         block(6, 8 + bodyBob, 2, 2, '#d5c49f');
         block(6, 8 + bodyBob, 1, 1, '#f3e3b9');
 
-        const headBob = Math.round(bounce * 0.45);
+        const headBob = Math.round(bounce * (speaking ? 0.8 : 0.45));
         block(3, 2 + headBob, 5, 5, '#b87556');
         block(2, 3 + headBob, 1, 3, '#d59b76');
         block(8, 3 + headBob, 1, 3, '#d59b76');
@@ -1433,7 +1757,10 @@
             block(4, 4 + headBob, 1, 1, '#211a20');
             block(7, 4 + headBob, 1, 1, '#211a20');
         }
-        if (expression === 'worried') {
+        if (speaking && Math.sin(time * 16) > 0.15) {
+            block(5, 6 + headBob, 2, 2, '#542b35');
+            block(5, 6 + headBob, 2, 1, '#f4d7c4');
+        } else if (expression === 'worried') {
             block(3, 3 + headBob, 2, 1, '#30252a');
             block(7, 3 + headBob, 2, 1, '#30252a');
             block(5, 6 + headBob, 2, 1, '#7a3637');
@@ -1442,9 +1769,6 @@
             block(7, 3 + headBob, 2, 1, '#30252a');
             block(5, 6 + headBob, 2, 1, '#7a3637');
             block(5, 6 + headBob, 1, 1, '#f4d7c4');
-        } else if (speaking && Math.sin(time * 9) > 0.2) {
-            block(5, 6 + headBob, 2, 2, '#542b35');
-            block(5, 6 + headBob, 2, 1, '#f4d7c4');
         } else {
             block(5, 6 + headBob, 2, 1, '#8f4f4a');
         }
@@ -1453,11 +1777,37 @@
     function drawQuestionScene(canvas, sceneKey, time = tempoAnimacao) {
         if (!canvas) return;
         const context = canvas.getContext('2d');
-        drawOfficeRoom(context, sceneKey);
-        if (sceneKey !== 'recepcao') {
-            drawPixelCharacter(context, 690, 354, '#73529a', 'neutral', time, 1.25, false, true);
-            drawPixelCharacter(context, 790, 368, '#416d76', 'happy', time + 0.4, 1.25);
+        if (sceneKey.startsWith('english-')) {
+            drawEnglishScenario(context, sceneKey);
+        } else {
+            drawOfficeRoom(context, sceneKey);
         }
+        const faseFala = time % 6.2;
+        const falando = faseFala < 5;
+        const gesto = faseFala < 0.85 || (faseFala > 1.35 && faseFala < 2.55)
+            ? 'open'
+            : (faseFala > 2.9 && faseFala < 3.65 ? 'point' : (faseFala > 4 && faseFala < 4.8 ? 'emphasis' : 'none'));
+        const expressao = gesto === 'open' ? 'happy' : 'neutral';
+        drawPixelCharacter(context, 690, 354, '#73529a', expressao, time, 1.25, false, falando, gesto);
+        drawPixelCharacter(context, 790, 368, '#416d76', 'happy', time + 0.4, 1.25);
+    }
+
+    function animarCenaEntrevista() {
+        if (faseJogo !== 'entrevista') {
+            animacaoCenario = null;
+            return;
+        }
+
+        const stage = document.querySelector('.scene-stage');
+        const canvas = stage?.querySelector('.scene-art');
+        if (!canvas) {
+            animacaoCenario = null;
+            return;
+        }
+
+        tempoAnimacao = performance.now() / 1000;
+        drawQuestionScene(canvas, stage.dataset.cenario);
+        animacaoCenario = requestAnimationFrame(animarCenaEntrevista);
     }
 
     function drawLobby(canvas) {
@@ -1652,6 +2002,8 @@
 
     function renderLobby() {
         pararTemporizador();
+        if (animacaoCenario) cancelAnimationFrame(animacaoCenario);
+        animacaoCenario = null;
         document.getElementById('timer-box').style.display = 'none';
         document.getElementById('etapa-texto').innerText = 'Recepção';
         const conteudo = document.getElementById('conteudo-jogo');
@@ -1720,12 +2072,12 @@
         const visualDaVaga = pergunta && typeof pergunta.id === 'string' && pergunta.id.startsWith('cargo_');
         const visual = visualDaVaga
             ? {
-                cenario: 'planejamento',
+                cenario: 'cargo',
                 local: `Estudo de caso • ${perfis[perfilSelecionado].label}`,
                 fala: 'O cenário tem incertezas e mais de um custo possível. Qual hipótese orienta sua decisão?',
                 legenda: 'Considere evidências, reversibilidade e impacto para o negócio.'
             }
-            : cenariosVisuais[indice] || {
+            : cenariosVisuais[Number(pergunta?.id) - 1] || {
             ...cenariosVisuais[0],
             local: 'Simulação de entrevista',
             fala: 'Respire fundo. Vamos começar: mostre o melhor da sua experiência.',
@@ -1864,7 +2216,7 @@
         atualizarBarra();
         const conteudo = document.getElementById('conteudo-jogo');
         document.getElementById('etapa-texto').innerText =
-            `Etapa: 0 de ${modoSelecionado === 'completo' ? 15 : 13}`;
+            `Etapa: 0 de ${modoSelecionado === 'completo' ? 20 : 18}`;
         conteudo.innerHTML = `
             <div class="start-panel">
                 <div class="card hero-card">
@@ -1884,11 +2236,11 @@
                 <div class="modo-grid" role="group" aria-label="Formato da entrevista">
                     <button class="modo-card ${modoSelecionado === 'completo' ? 'selecionado' : ''}" data-modo="completo" aria-pressed="${modoSelecionado === 'completo'}">
                         <strong>Simulado completo</strong>
-                        <span>13 casos situacionais + 2 respostas abertas</span>
+                        <span>18 perguntas objetivas + 2 respostas abertas</span>
                     </button>
                     <button class="modo-card ${modoSelecionado === 'rapidas' ? 'selecionado' : ''}" data-modo="rapidas" aria-pressed="${modoSelecionado === 'rapidas'}">
                         <strong>Só perguntas rápidas</strong>
-                        <span>13 casos situacionais, sem texto longo</span>
+                        <span>18 perguntas objetivas, sem resposta longa</span>
                     </button>
                 </div>
 
@@ -2054,6 +2406,8 @@
         document.querySelectorAll('.scene-stage').forEach(stage => {
             drawQuestionScene(stage.querySelector('.scene-art'), stage.dataset.cenario);
         });
+        if (animacaoCenario) cancelAnimationFrame(animacaoCenario);
+        animacaoCenario = requestAnimationFrame(animarCenaEntrevista);
 
         document.getElementById('etapa-texto').innerText = `Etapa: ${cenaAtual + 1} de ${cenas.length}`;
         iniciarTemporizador();
